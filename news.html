@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Yangiliklar — RCGA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,0..100,0..1;1,9..144,300..700,0..100,0..1&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css"/>
+</head>
+<body data-page="news">
+
+<div class="scroll-progress"></div>
+<div id="nav-mount"></div>
+
+<section class="page-hero">
+  <div class="container-wide">
+    <div class="crumbs">
+      <a href="index.html" data-uz="Bosh sahifa" data-en="Home" data-ru="Главная">Bosh sahifa</a>
+      <span class="sep">/</span>
+      <span data-uz="Yangiliklar" data-en="News" data-ru="Новости">Yangiliklar</span>
+    </div>
+    <div class="eyebrow" data-uz="RCGA hamjamiyat · Mintaqa yangiliklari" data-en="RCGA Community · Regional News" data-ru="Сообщество RCGA · Новости региона">RCGA hamjamiyat · Mintaqa yangiliklari</div>
+    <h1>
+      <span data-uz="So'nggi" data-en="Latest" data-ru="Последние">So'nggi</span>
+      <em data-uz="yangiliklar" data-en="news" data-ru="новости">yangiliklar</em>.
+    </h1>
+    <p class="lead" data-uz="RCGA platformasi va CAREC mintaqasidagi yashil qishloq xo'jaligi sohasidagi eng dolzarb yangiliklar, e'lonlar va matbuot bayonotlari." data-en="The most relevant news, announcements, and press releases on green agriculture across the RCGA platform and CAREC region." data-ru="Актуальные новости, анонсы и пресс-релизы в сфере зеленого сельского хозяйства платформы RCGA и региона ЦАРИЭС.">RCGA platformasi va CAREC mintaqasidagi yashil qishloq xo'jaligi sohasidagi eng dolzarb yangiliklar, e'lonlar va matbuot bayonotlari.</p>
+  </div>
+</section>
+
+<!-- FEATURED -->
+<section class="section">
+  <div class="container-wide">
+    <a href="publication-detail.html" class="reveal" style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0; background: var(--ink-50); border: 1px solid var(--ink-200); text-decoration: none;">
+      <div style="aspect-ratio: 16/11; overflow: hidden;">
+        <img src="assets/aral-sea-conservation.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover;"/>
+      </div>
+      <div style="padding: 56px 48px; display: flex; flex-direction: column; justify-content: center;">
+        <div style="display: flex; gap: 8px; margin-bottom: 24px;">
+          <span class="tag gold" data-uz="Asosiy" data-en="Featured" data-ru="Главное">Asosiy</span>
+          <span class="tag ink" data-uz="12 Iyun 2026" data-en="June 12, 2026" data-ru="12 июня 2026">12 Iyun 2026</span>
+        </div>
+        <h2 style="font-size: 42px; margin-bottom: 24px; color: var(--ink-900);">
+          <span data-uz="CAREC Yashil Agrar Forumi 2026 — Toshkentda" data-en="CAREC Green Agrarian Forum 2026 — in Tashkent" data-ru="Зеленый аграрный форум ЦАРИЭС 2026 — в Ташкенте">CAREC Yashil Agrar Forumi 2026 — Toshkentda</span>
+          <em style="color: var(--green-700); font-style: italic; font-weight: 400;" data-uz="eng katta" data-en="the largest" data-ru="крупнейшее">eng katta</em>
+          <span data-uz="tadbir." data-en="event." data-ru="событие.">tadbir.</span>
+        </h2>
+        <p style="color: var(--ink-600); font-size: 17px; line-height: 1.6; margin-bottom: 32px;" data-uz="12-15 iyul kunlari Toshkent shahrida CAREC mintaqasining eng yirik agrar forumi bo'lib o'tadi. 8 davlatdan 600+ olim, fermer va siyosatchi qatnashishi kutilmoqda." data-en="On July 12-15 in Tashkent, the CAREC region's major agricultural forum will convene 600+ researchers, farmers, and policymakers across 8 countries." data-ru="12-15 июля в Ташкенте пройдет крупнейший аграрный форум региона ЦАРИЭС с участием 600+ ученых, фермеров и политиков из 8 стран.">12-15 iyul kunlari Toshkent shahrida CAREC mintaqasining eng yirik agrar forumi bo'lib o'tadi. 8 davlatdan 600+ olim, fermer va siyosatchi qatnashishi kutilmoqda.</p>
+        <span class="btn-link" style="align-self: flex-start;">
+          <span data-uz="Batafsil" data-en="Read more" data-ru="Подробнее">Batafsil</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- FILTERS -->
+<section class="section-tight">
+  <div class="container-wide">
+    <div class="filter-bar reveal">
+      <button class="filter-chip active" data-uz="Barchasi" data-en="All" data-ru="Все">Barchasi</button>
+      <button class="filter-chip" data-uz="RCGA yangiliklari" data-en="RCGA News" data-ru="Новости RCGA">RCGA yangiliklari</button>
+      <button class="filter-chip" data-uz="Tadbirlar" data-en="Events" data-ru="События">Tadbirlar</button>
+      <button class="filter-chip" data-uz="Hamkorlik" data-en="Partnerships" data-ru="Сотрудничество">Hamkorlik</button>
+      <button class="filter-chip" data-uz="Tadqiqotlar" data-en="Research" data-ru="Исследования">Tadqiqotlar</button>
+      <button class="filter-chip" data-uz="Matbuot bayonotlari" data-en="Press Releases" data-ru="Пресс-релизы">Matbuot bayonotlari</button>
+    </div>
+  </div>
+</section>
+
+<!-- NEWS GRID -->
+<section style="padding-bottom: 120px;">
+  <div class="container-wide">
+    <div class="card-grid reveal-stagger">
+
+      <a href="#" class="pub-card">
+        <div class="pub-card-img"><img src="assets/young-scientist-school.jpg" alt=""/><div class="pub-card-badge">RCGA</div></div>
+        <div class="pub-card-body">
+          <div class="pub-card-meta"><span data-uz="10 Iyun 2026" data-en="June 10, 2026" data-ru="10 июня 2026">10 Iyun 2026</span><span class="dot"></span><span data-uz="5 min o'qish" data-en="5 min read" data-ru="5 мин чтения">5 min o'qish</span></div>
+          <h4 data-uz="Yosh tadqiqotchilar maktabi-2026 ishtirokchilari aniqlandi" data-en="Participants announced for Young Researchers School 2026" data-ru="Определены участники Школы молодых исследователей-2026">Yosh tadqiqotchilar maktabi-2026 ishtirokchilari aniqlandi</h4>
+          <p class="pub-card-excerpt" data-uz="Avgust oyida Bishkekda bo'lib o'tadigan yosh tadqiqotchilar maktabiga 8 mamlakatdan 64 nafar PhD talaba tanlandi." data-en="64 PhD researchers from 8 nations were selected for the summer school in Bishkek this August." data-ru="64 докторанта из 8 стран отобраны для участия в летней школе в Бишкеке в августе.">Avgust oyida Bishkekda bo'lib o'tadigan yosh tadqiqotchilar maktabiga 8 mamlakatdan 64 nafar PhD talaba tanlandi.</p>
+          <div class="pub-card-foot"><span>RCGA Press</span><span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a href="#" class="pub-card">
+        <div class="pub-card-img"><img src="assets/uzbek-china-lab.jpg" alt=""/><div class="pub-card-badge" data-uz="Hamkorlik" data-en="Partnership" data-ru="Сотрудничество">Hamkorlik</div></div>
+        <div class="pub-card-body">
+          <div class="pub-card-meta"><span data-uz="5 Iyun 2026" data-en="June 5, 2026" data-ru="5 июня 2026">5 Iyun 2026</span><span class="dot"></span><span data-uz="3 min o'qish" data-en="3 min read" data-ru="3 мин чтения">3 min o'qish</span></div>
+          <h4 data-uz="Toshkentda yangi O'zbek-Xitoy qo'shma laboratoriyasi ochildi" data-en="New Uzbek-Chinese Joint Laboratory launched in Tashkent" data-ru="В Ташкенте открылась новая узбекско-китайская совместная лаборатория">Toshkentda yangi O'zbek-Xitoy qo'shma laboratoriyasi ochildi</h4>
+          <p class="pub-card-excerpt" data-uz="Tuproq, o'simlik va o'g'it tadqiqotlari bo'yicha zamonaviy laboratoriya RCGA hamkorligida ishga tushdi." data-en="Modern laboratory for soil, crop, and fertilizer analysis inaugurated with RCGA cooperation." data-ru="Современная лаборатория по анализу почв, растений и удобрений запущена в партнерстве с RCGA.">Toshkentda yangi O'zbek-Xitoy qo'shma laboratoriyasi ochildi</p>
+          <div class="pub-card-foot"><span>Yuz.uz</span><span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a href="#" class="pub-card">
+        <div class="pub-card-img"><img src="assets/farmer-healthy-soil.jpg" alt=""/><div class="pub-card-badge" data-uz="Tadqiqot" data-en="Research" data-ru="Исследование">Tadqiqot</div></div>
+        <div class="pub-card-body">
+          <div class="pub-card-meta"><span data-uz="1 Iyun 2026" data-en="June 1, 2026" data-ru="1 июня 2026">1 Iyun 2026</span><span class="dot"></span><span data-uz="7 min o'qish" data-en="7 min read" data-ru="7 мин чтения">7 min o'qish</span></div>
+          <h4 data-uz="Tuproq sog'ligi indeksi: yangi mintaqaviy metrika" data-en="Soil Health Index: novel regional metric released" data-ru="Индекс здоровья почвы: представлена новая региональная метрика">Tuproq sog'ligi indeksi: yangi mintaqaviy metrika</h4>
+          <p class="pub-card-excerpt" data-uz="RCGA tadqiqotchilari mintaqa uchun moslashtirilgan yagona tuproq sog'ligi baholash tizimini taqdim etdi." data-en="RCGA scientists present a unified soil evaluation system tailored for arid climates." data-ru="Ученые RCGA представили унифицированную систему оценки здоровья почв региона.">RCGA tadqiqotchilari mintaqa uchun moslashtirilgan yagona tuproq sog'ligi baholash tizimini taqdim etdi.</p>
+          <div class="pub-card-foot"><span>Dr. M. Rasulova</span><span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a href="#" class="pub-card">
+        <div class="pub-card-img"><img src="assets/fao-uzbekistan.jpg" alt=""/><div class="pub-card-badge" data-uz="Hamkorlik" data-en="Partnership" data-ru="Сотрудничество">Hamkorlik</div></div>
+        <div class="pub-card-body">
+          <div class="pub-card-meta"><span data-uz="28 May 2026" data-en="May 28, 2026" data-ru="28 мая 2026">28 May 2026</span><span class="dot"></span><span data-uz="4 min o'qish" data-en="4 min read" data-ru="4 мин чтения">4 min o'qish</span></div>
+          <h4 data-uz="FAO va RCGA chorvachilik kasalliklariga qarshi yangi dastur" data-en="FAO & RCGA launch livestock biosecurity initiative" data-ru="ФАО и RCGA запустили новую программу против болезней скота">FAO va RCGA chorvachilik kasalliklariga qarshi yangi dastur</h4>
+          <p class="pub-card-excerpt" data-uz="8 ta davlat bo'ylab PPR va boshqa yuqumli kasalliklarning monitoringi bo'yicha kelishuv imzolandi." data-en="Agreement signed for monitoring PPR and transboundary epizootics across 8 states." data-ru="Подписано соглашение о мониторинге чумы мелких жвачных и других инфекций в 8 странах.">8 ta davlat bo'ylab PPR va boshqa yuqumli kasalliklarning monitoringi bo'yicha kelishuv imzolandi.</p>
+          <div class="pub-card-foot"><span>FAO Country Office</span><span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a href="#" class="pub-card">
+        <div class="pub-card-img"><img src="assets/central-asia-climate.jpg" alt=""/><div class="pub-card-badge" data-uz="Tadbir" data-en="Event" data-ru="Событие">Tadbir</div></div>
+        <div class="pub-card-body">
+          <div class="pub-card-meta"><span data-uz="20 May 2026" data-en="May 20, 2026" data-ru="20 мая 2026">20 May 2026</span><span class="dot"></span><span data-uz="6 min o'qish" data-en="6 min read" data-ru="6 мин чтения">6 min o'qish</span></div>
+          <h4 data-uz="Olmaotada iqlim moslashuvi bo'yicha xalqaro konferensiya" data-en="Almaty hosts international conference on climate adaptation" data-ru="В Алматы прошла международная конференция по климатической адаптации">Olmaotada iqlim moslashuvi bo'yicha xalqaro konferensiya</h4>
+          <p class="pub-card-excerpt" data-uz="RCGA, USAID va GIZ hamkorligida o'tkazilgan tadbirda 300+ ishtirokchi qatnashdi." data-en="Over 300 delegates participated in the symposium convened by RCGA, USAID, and GIZ." data-ru="Более 300 участников приняли участие в мероприятии, организованном RCGA, USAID и GIZ.">RCGA, USAID va GIZ hamkorligida o'tkazilgan tadbirda 300+ ishtirokchi qatnashdi.</p>
+          <div class="pub-card-foot"><span>RCGA Press</span><span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a href="#" class="pub-card">
+        <div class="pub-card-img"><img src="assets/smallholder-farmers.jpg" alt=""/><div class="pub-card-badge">RCGA</div></div>
+        <div class="pub-card-body">
+          <div class="pub-card-meta"><span data-uz="14 May 2026" data-en="May 14, 2026" data-ru="14 мая 2026">14 May 2026</span><span class="dot"></span><span data-uz="3 min o'qish" data-en="3 min read" data-ru="3 мин чтения">3 min o'qish</span></div>
+          <h4 data-uz="Platforma 5 000 ro'yxatdan o'tgan foydalanuvchi sariga yetdi" data-en="Platform reaches 5,000 registered active users" data-ru="Платформа достигла отметки в 5 000 зарегистрированных пользователей">Platforma 5 000 ro'yxatdan o'tgan foydalanuvchi sariga yetdi</h4>
+          <p class="pub-card-excerpt" data-uz="RCGA Digital v2.0 platformasi ishga tushgandan keyin uch oy ichida muhim chegarani bosib o'tdi." data-en="The RCGA Digital v2.0 platform hit a critical milestone three months post-deployment." data-ru="Цифровая платформа RCGA преодолела важный рубеж за три месяца после запуска.">RCGA Digital v2.0 platformasi ishga tushgandan keyin uch oy ichida muhim chegarani bosib o'tdi.</p>
+          <div class="pub-card-foot"><span>RCGA Press</span><span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a href="#" class="pub-card">
+        <div class="pub-card-img"><img src="assets/farm-restructuring.jpg" alt=""/><div class="pub-card-badge" data-uz="Matbuot" data-en="Press" data-ru="Пресса">Matbuot</div></div>
+        <div class="pub-card-body">
+          <div class="pub-card-meta"><span data-uz="10 May 2026" data-en="May 10, 2026" data-ru="10 мая 2026">10 May 2026</span><span class="dot"></span><span data-uz="5 min o'qish" data-en="5 min read" data-ru="5 мин чтения">5 min o'qish</span></div>
+          <h4 data-uz="&quot;Voices on Central Asia&quot;: RCGA direktori bilan suhbat" data-en="&quot;Voices on Central Asia&quot;: In-depth interview with RCGA Director" data-ru="&quot;Voices on Central Asia&quot;: Интервью с директором RCGA">"Voices on Central Asia": RCGA direktori bilan suhbat</h4>
+          <p class="pub-card-excerpt" data-uz="Prof. Dilfuza Egamberdiyeva mintaqaning agrar kelajagi haqida muhim suhbat." data-en="Prof. Dilfuza Egamberdiyeva shares insights on the regional agrarian vision." data-ru="Проф. Дильфуза Эгамбердиева об аграрном будущем региона Центральной Азии.">Prof. Dilfuza Egamberdiyeva mintaqaning agrar kelajagi haqida muhim suhbat.</p>
+          <div class="pub-card-foot"><span>VoCA jurnali</span><span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a href="#" class="pub-card">
+        <div class="pub-card-img"><img src="assets/agri-service-center.jpg" alt=""/><div class="pub-card-badge" data-uz="Hamkorlik" data-en="Partnership" data-ru="Сотрудничество">Hamkorlik</div></div>
+        <div class="pub-card-body">
+          <div class="pub-card-meta"><span data-uz="2 May 2026" data-en="May 2, 2026" data-ru="2 мая 2026">2 May 2026</span><span class="dot"></span><span data-uz="4 min o'qish" data-en="4 min read" data-ru="4 мин чтения">4 min o'qish</span></div>
+          <h4 data-uz="O'zbekistonda agro-xizmat markazlari tarmog'i kengaytirilmoqda" data-en="Agri-service centers network expands across Uzbekistan" data-ru="Сеть агросервисных центров расширяется в Узбекистане">O'zbekistonda agro-xizmat markazlari tarmog'i kengaytirilmoqda</h4>
+          <p class="pub-card-excerpt" data-uz="RCGA tavsiyalari asosida 12 ta yangi mintaqaviy markazning ochilishi rejalashtirilgan." data-en="12 new regional centers scheduled to open following RCGA policy recommendations." data-ru="На основе рекомендаций RCGA запланировано открытие 12 региональных центров.">RCGA tavsiyalari asosida 12 ta yangi mintaqaviy markazning ochilishi rejalashtirilgan.</p>
+          <div class="pub-card-foot"><span>EastFruit</span><span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a href="#" class="pub-card">
+        <div class="pub-card-img"><img src="assets/hand-soil-planting.jpg" alt=""/><div class="pub-card-badge">RCGA</div></div>
+        <div class="pub-card-body">
+          <div class="pub-card-meta"><span data-uz="25 Apr 2026" data-en="Apr 25, 2026" data-ru="25 апр 2026">25 Apr 2026</span><span class="dot"></span><span data-uz="4 min o'qish" data-en="4 min read" data-ru="4 мин чтения">4 min o'qish</span></div>
+          <h4 data-uz="Yangi grant dasturi: yosh fermerlar uchun ilmiy yordam" data-en="New grant scheme: research support for young farmers" data-ru="Новая грантовая программа: научная поддержка молодых фермеров">Yangi grant dasturi: yosh fermerlar uchun ilmiy yordam</h4>
+          <p class="pub-card-excerpt" data-uz="35 yoshgacha bo'lgan fermerlar uchun ilmiy maslahat va texnik yordam dasturi e'lon qilindi." data-en="Advisory and technical support scheme announced for farmers aged under 35." data-ru="Программа научно-технической консультации для фермеров до 35 лет.">35 yoshgacha bo'lgan fermerlar uchun ilmiy maslahat va texnik yordam dasturi e'lon qilindi.</p>
+          <div class="pub-card-foot"><span>RCGA Grants</span><span class="arrow">→</span></div>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="reveal" style="margin-top: 64px; text-align: center;">
+      <button class="btn btn-outline" data-uz="Yana yangiliklar yuklash" data-en="Load more news" data-ru="Загрузить еще новости">Yana yangiliklar yuklash</button>
+    </div>
+  </div>
+</section>
+
+<div id="footer-mount"></div>
+
+<script src="assets/partials.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/api-client.js"></script>
+</body>
+</html>
