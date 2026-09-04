@@ -95,13 +95,33 @@ const RCGA_API = {
   },
 
   // AI Advisory Chat
-  async askAI(message, language = 'uz') {
-    const res = await fetch(`${API_BASE}/ai/chat`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message, language })
-    });
-    return res.ok ? await res.json() : { response: 'Kechirasiz, javob olishda xatolik yuz berdi.' };
+  async askAI(message, language = 'uz', history = [], apiKey = null) {
+    try {
+      const storedKey = apiKey || localStorage.getItem('rcga_ai_key') || '';
+      const payload = { message, language, history };
+      if (storedKey) payload.api_key = storedKey;
+      
+      const res = await fetch(`${API_BASE}/ai/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (res.ok) {
+        return await res.json();
+      }
+      return { response: 'Kechirasiz, javob olishda xatolik yuz berdi. Iltimos, qayta urinib ko\'ring.' };
+    } catch (err) {
+      return { response: 'Server bilan bog\'lanishda uzilish bo\'ldi. Tarmoqni tekshiring.' };
+    }
+  },
+
+  async getAIStatus() {
+    try {
+      const res = await fetch(`${API_BASE}/ai/status`);
+      return res.ok ? await res.json() : { status: 'online', engine: 'RCGA Agro-Expert' };
+    } catch (_) {
+      return { status: 'offline', engine: 'Offline' };
+    }
   }
 };
 

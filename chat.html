@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="uz">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RCGA Assistant — Sun'iy Intellekt Maslahatchisi</title>
+  <meta name="description"
+    content="RCGA sun'iy intellekt agromaslahatchisi: Markaziy Osiyo qishloq xo'jaligi, suv resurslari, tuproq unumdorligi va ilmiy nashrlar bo'yicha interaktiv yordamchi." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,0..100,0..1;1,9..144,300..700,0..100,0..1&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css" />
+  <style>
+    /* Modal styles for AI Settings */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center; z-index: 10000;
+      opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
+    }
+    .modal-backdrop.open { opacity: 1; pointer-events: auto; }
+    .modal-card {
+      background: #fff; width: 460px; max-width: 90vw; border-radius: 18px;
+      padding: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+
+<body class="chat-page" data-page="chat">
+
+  <!-- Shared RCGA Navigation Mount -->
+  <div id="nav-mount"></div>
+
+  <!-- Main Chat Application Container -->
+  <div class="chat-layout">
+    
+    <!-- Sidebar -->
+    <aside class="chat-sidebar" id="chat-sidebar">
+      <div class="chat-sidebar-header">
+        <button class="chat-new-btn" id="new-chat-btn" title="Yangi suhbat boshlash (⌘N)">
+          <span id="txt-new-chat">+ Yangi suhbat</span>
+          <span class="btn-badge">⌘N</span>
+        </button>
+      </div>
+
+      <div class="chat-history-container" id="chat-history-container">
+        <div class="chat-group-title" id="lbl-group-today">BUGUN</div>
+        <div id="sessions-today"></div>
+        <div class="chat-group-title" id="older-title" style="display:none; margin-top:14px;">OLDIN</div>
+        <div id="sessions-older"></div>
+      </div>
+
+      <div class="chat-user-footer">
+        <div class="chat-user-profile">
+          <div class="chat-user-avatar" id="user-avatar-text">M</div>
+          <div>
+            <div class="chat-user-name" id="user-display-name">Mehmon foydalanuvchi</div>
+          </div>
+          <span class="chat-user-tier" id="lbl-user-tier">BEPUL</span>
+        </div>
+        <button class="chat-config-btn" id="open-settings-btn" title="AI Model & API Sozlamalari">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Chat Container -->
+    <main class="chat-main">
+      <div class="chat-topbar">
+        <div class="chat-top-title">
+          <button class="chat-icon-btn" id="toggle-sidebar-btn" title="Yon panelni yopish/ochish">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </button>
+          <span class="chat-status-dot"></span>
+          <span id="chat-session-title">Suv resurslari haqida ayting</span>
+        </div>
+        <div class="chat-top-actions">
+          <button class="chat-icon-btn" id="export-chat-btn" title="Suhbatni nusxalash">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Messages Stream -->
+      <div class="chat-thread" id="chat-thread">
+        <div class="chat-thread-inner" id="messages-container">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+
+      <!-- Input Area -->
+      <div class="chat-input-area">
+        <div class="chat-input-container">
+          <!-- Suggestion pills for quick exploration -->
+          <div class="chat-suggestions" id="chat-suggestions"></div>
+
+          <div class="chat-prompt-box">
+            <textarea class="chat-textarea" id="chat-textarea" placeholder="RCGA Assistant'ga savol bering..." rows="1"></textarea>
+            <div class="chat-prompt-actions">
+              <div class="chat-kbd-hints" id="lbl-kbd-hints">
+                <kbd>ENTER</kbd> YUBORISH · <kbd>SHIFT + ENTER</kbd> YANGI QATOR
+              </div>
+              <button class="chat-send-btn" id="chat-send-btn" title="Yuborish" disabled>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="chat-disclaimer" id="lbl-disclaimer">RCGA ASSISTANT XATO QILISHI MUMKIN. MUHIM MA'LUMOTLARNI TEKSHIRING.</div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Settings Modal (API Key configuration) -->
+  <div class="modal-backdrop" id="settings-modal">
+    <div class="modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h3 id="lbl-modal-title" style="font-family: var(--serif); font-size: 19px; color: var(--ink-950);">AI Dvigateli Sozlamalari</h3>
+        <button id="close-settings-btn" style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--ink-400);">&times;</button>
+      </div>
+      <p id="lbl-modal-desc" style="font-size: 13.5px; color: var(--ink-600); margin-bottom: 16px; line-height: 1.5;">
+        Tizim avtomatik ravishda <strong>RCGA Agro-Expert RAG Dvigateli</strong> orqali platforma ilmiy bazasi asosida ishlaydi. Istasangiz, to'g'ridan-to'g'ri tashqi Google Gemini yoki OpenAI API kalitingizni ham ulashingiz mumkin:
+      </p>
+      <div style="margin-bottom: 14px;">
+        <label id="lbl-modal-key" style="display: block; font-family: var(--mono); font-size: 11px; text-transform: uppercase; color: var(--ink-500); margin-bottom: 6px;">Google Gemini API Kaliti</label>
+        <input type="password" id="gemini-key-input" placeholder="AIzaSy..." style="width: 100%; padding: 10px 12px; border: 1.5px solid var(--ink-200); border-radius: 8px; font-family: var(--mono); font-size: 13px;" />
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px;">
+        <button id="clear-key-btn" class="btn btn-outline btn-sm" style="padding: 8px 14px; font-size: 12.5px;">Tozalash</button>
+        <button id="save-key-btn" class="btn btn-primary btn-sm" style="padding: 8px 18px; font-size: 12.5px;">Saqlash</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/partials.js"></script>
+  <script src="assets/app.js"></script>
+  <script src="assets/api-client.js"></script>
+
+  <!-- Dedicated Multilingual Chat Application Logic -->
+  <script>
+    (function () {
+      // 1. Language Dictionary
+      const I18N = {
+        uz: {
+          newChat: "+ Yangi suhbat",
+          today: "BUGUN",
+          older: "OLDIN",
+          guestUser: "Mehmon foydalanuvchi",
+          tier: "BEPUL",
+          defaultTitle: "Yangi suhbat",
+          placeholder: "RCGA Assistant'ga savol bering...",
+          kbdHints: "<kbd>ENTER</kbd> YUBORISH · <kbd>SHIFT + ENTER</kbd> YANGI QATOR",
+          disclaimer: "RCGA ASSISTANT XATO QILISHI MUMKIN. MUHIM MA'LUMOTLARNI TEKSHIRING.",
+          senderYou: "Siz",
+          sourcesTitle: "Foydalanilgan RCGA manbalari",
+          error: "Kechirasiz, javob olishda xatolik yuz berdi. Iltimos, qayta urinib ko'ring.",
+          modalTitle: "AI Dvigateli Sozlamalari",
+          modalDesc: "Tizim avtomatik ravishda <strong>RCGA Agro-Expert RAG Dvigateli</strong> orqali platforma ilmiy bazasi asosida ishlaydi. Istasangiz, to'g'ridan-to'g'ri tashqi Google Gemini yoki OpenAI API kalitingizni ham ulashingiz mumkin:",
+          modalKey: "Google Gemini API Kaliti",
+          modalClear: "Tozalash",
+          modalSave: "Saqlash",
+          chips: [
+            { label: "💧 Suv resurslari", query: "Suv resurslari haqida ayting" },
+            { label: "🌱 Tuproq sho'rlanishi", query: "Sho'rlangan tuproqlarni tiklash bo'yicha tavsiyalar" },
+            { label: "🌾 Halofitlar", query: "Halofit ekinlarini yetishtirish metodikasi" },
+            { label: "📡 Raqamli agrotex", query: "Raqamli agrotexnologiyalar va ekin monitoringi" },
+            { label: "📚 Nashrlar", query: "RCGA bazasidagi eng dolzarb ilmiy nashrlar" }
+          ]
+        },
+        ru: {
+          newChat: "+ Новый диалог",
+          today: "СЕГОДНЯ",
+          older: "РАНЕЕ",
+          guestUser: "Гостевой пользователь",
+          tier: "БЕСПЛАТНО",
+          defaultTitle: "Новый диалог",
+          placeholder: "Задайте вопрос RCGA Assistant...",
+          kbdHints: "<kbd>ENTER</kbd> ОТПРАВИТЬ · <kbd>SHIFT + ENTER</kbd> НОВАЯ СТРОКА",
+          disclaimer: "RCGA ASSISTANT МОЖЕТ ОШИБАТЬСЯ. ПРОВЕРЯЙТЕ ВАЖНУЮ ИНФОРМАЦИЮ.",
+          senderYou: "Вы",
+          sourcesTitle: "Использованные источники RCGA",
+          error: "К сожалению, произошла ошибка. Пожалуйста, повторите попытку.",
+          modalTitle: "Настройки ИИ-движка",
+          modalDesc: "Система автоматически работает на базе <strong>RCGA Agro-Expert RAG</strong> с опорой на научную базу. При желании вы можете подключить собственный ключ Google Gemini или OpenAI API:",
+          modalKey: "Ключ Google Gemini API",
+          modalClear: "Очистить",
+          modalSave: "Сохранить",
+          chips: [
+            { label: "💧 Водные ресурсы", query: "Расскажите о водных ресурсах и орошении" },
+            { label: "🌱 Засоление почв", query: "Рекомендации по восстановлению засоленных почв" },
+            { label: "🌾 Галофиты", query: "Методика выращивания галофитных культур" },
+            { label: "📡 Цифровой агротех", query: "Цифровые агротехнологии и спутниковый мониторинг" },
+            { label: "📚 Публикации", query: "Актуальные научные публикации в базе знаний RCGA" }
+          ]
+        },
+        en: {
+          newChat: "+ New Chat",
+          today: "TODAY",
+          older: "PREVIOUS",
+          guestUser: "Guest User",
+          tier: "FREE",
+          defaultTitle: "New chat",
+          placeholder: "Ask RCGA Assistant a question...",
+          kbdHints: "<kbd>ENTER</kbd> SEND · <kbd>SHIFT + ENTER</kbd> NEW LINE",
+          disclaimer: "RCGA ASSISTANT MAY MAKE MISTAKES. VERIFY IMPORTANT INFORMATION.",
+          senderYou: "You",
+          sourcesTitle: "RCGA Sources Referenced",
+          error: "Sorry, an error occurred while fetching the response. Please try again.",
+          modalTitle: "AI Engine Settings",
+          modalDesc: "The system runs automatically using the <strong>RCGA Agro-Expert RAG Engine</strong> grounded in the knowledge repository. Optionally, you can supply your own Google Gemini or OpenAI API key:",
+          modalKey: "Google Gemini API Key",
+          modalClear: "Clear",
+          modalSave: "Save",
+          chips: [
+            { label: "💧 Water Resources", query: "Tell me about water resources and irrigation" },
+            { label: "🌱 Soil Salinity", query: "Recommendations for restoring saline soils" },
+            { label: "🌾 Halophytes", query: "Methods for cultivating halophyte crops" },
+            { label: "📡 Digital Agritech", query: "Digital agrarian technology and crop monitoring" },
+            { label: "📚 Publications", query: "Latest research publications in RCGA repository" }
+          ]
+        }
+      };
+
+      let currentLang = 'uz';
+      try {
+        currentLang = localStorage.getItem('rcga_lang') || 'uz';
+      } catch (_) { }
+
+      // 2. Chat State Management
+      const STORAGE_KEY = 'rcga_chat_sessions_v1';
+      const ACTIVE_SESSION_KEY = 'rcga_active_session_id';
+
+      function loadSessions() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          return raw ? JSON.parse(raw) : [];
+        } catch (_) { return []; }
+      }
+
+      function saveSessions(sessions) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+      }
+
+      let sessions = loadSessions();
+      let currentSessionId = localStorage.getItem(ACTIVE_SESSION_KEY);
+
+      // Check if session ID was passed via query params
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryPrompt = urlParams.get('q');
+      const paramSession = urlParams.get('session');
+      if (paramSession) currentSessionId = paramSession;
+
+      // Seed initial sample session matching screenshot 1 if completely empty
+      if (sessions.length === 0) {
+        const initialSession = {
+          id: 'session-' + Date.now(),
+          title: "Suv resurslari haqida ayting",
+          createdAt: new Date().toISOString(),
+          messages: [
+            {
+              role: "user",
+              content: "Suv resurslari haqida ayting",
+              timestamp: new Date().toISOString()
+            },
+            {
+              role: "assistant",
+              content: "Suv resurslari bo'yicha RCGA platformasida bir necha muhim tadqiqotlar mavjud. Eng dolzarblari:\n\n1. **Orol dengizi havzasida barqaror sug'orish** — sun'iy yo'ldosh va IoT sensorlari asosida 27% suv tejash imkonini beruvchi model (D. Egamberdiyeva, 2026).\n2. **Amudaryo transchegaraviy suv boshqaruvi** — 30 yillik mintaqaviy tahlil (K. Akramov, 2025).\n3. **Damcha sug'orish samaradorligi** — Farg'ona vodiysida olib borilgan tajribalar.\n\nBirinchi maqolani o'qish uchun *Publications* bo'limiga o'ting yoki DOI: `10.1234/rcga.2026.0421` orqali toping. Yordam berishimni davom ettirmoqchimisiz?",
+              timestamp: new Date().toISOString(),
+              sources: [
+                { title: "Markaziy Osiyo Qishloq Xo'jaligida Suv Resurslarini Boshqarish", doi: "10.1234/rcga.2026.0421", url: "publications.html" }
+              ]
+            }
+          ]
+        };
+        sessions.push(initialSession);
+        saveSessions(sessions);
+        currentSessionId = initialSession.id;
+      }
+
+      if (!currentSessionId || !sessions.find(s => s.id === currentSessionId)) {
+        currentSessionId = sessions[0].id;
+      }
+      localStorage.setItem(ACTIVE_SESSION_KEY, currentSessionId);
+
+      // DOM Elements
+      const sidebar = document.getElementById('chat-sidebar');
+      const toggleSidebarBtn = document.getElementById('toggle-sidebar-btn');
+      const newChatBtn = document.getElementById('new-chat-btn');
+      const txtNewChat = document.getElementById('txt-new-chat');
+      const lblGroupToday = document.getElementById('lbl-group-today');
+      const sessionsTodayEl = document.getElementById('sessions-today');
+      const sessionsOlderEl = document.getElementById('sessions-older');
+      const olderTitleEl = document.getElementById('older-title');
+      const sessionTitleEl = document.getElementById('chat-session-title');
+      const messagesContainer = document.getElementById('messages-container');
+      const chatThread = document.getElementById('chat-thread');
+      const textarea = document.getElementById('chat-textarea');
+      const sendBtn = document.getElementById('chat-send-btn');
+      const exportBtn = document.getElementById('export-chat-btn');
+      const suggestionsBox = document.getElementById('chat-suggestions');
+      const userDisplayName = document.getElementById('user-display-name');
+      const userAvatarText = document.getElementById('user-avatar-text');
+      const lblUserTier = document.getElementById('lbl-user-tier');
+      const lblKbdHints = document.getElementById('lbl-kbd-hints');
+      const lblDisclaimer = document.getElementById('lbl-disclaimer');
+
+      // Update User Card info
+      function updateUserInfo() {
+        try {
+          const storedUser = localStorage.getItem('rcga_user');
+          if (storedUser) {
+            const u = JSON.parse(storedUser);
+            userDisplayName.textContent = u.full_name || u.email;
+            userAvatarText.textContent = (u.full_name || u.email || 'M').charAt(0).toUpperCase();
+          } else {
+            userDisplayName.textContent = (I18N[currentLang] || I18N.uz).guestUser;
+            userAvatarText.textContent = 'M';
+          }
+        } catch (_) { }
+      }
+
+      // 3. Apply Language to Chat UI
+      function updateLanguage(lang) {
+        if (!I18N[lang]) lang = 'uz';
+        currentLang = lang;
+        try { localStorage.setItem('rcga_lang', lang); } catch(_) {}
+
+        const t = I18N[lang];
+        if (txtNewChat) txtNewChat.textContent = t.newChat;
+        if (lblGroupToday) lblGroupToday.textContent = t.today;
+        if (olderTitleEl) olderTitleEl.textContent = t.older;
+        if (lblUserTier) lblUserTier.textContent = t.tier;
+        if (textarea) textarea.placeholder = t.placeholder;
+        if (lblKbdHints) lblKbdHints.innerHTML = t.kbdHints;
+        if (lblDisclaimer) lblDisclaimer.textContent = t.disclaimer;
+
+        // Modal elements
+        const lblModalTitle = document.getElementById('lbl-modal-title');
+        const lblModalDesc = document.getElementById('lbl-modal-desc');
+        const lblModalKey = document.getElementById('lbl-modal-key');
+        const clearKeyBtn = document.getElementById('clear-key-btn');
+        const saveKeyBtn = document.getElementById('save-key-btn');
+        if (lblModalTitle) lblModalTitle.textContent = t.modalTitle;
+        if (lblModalDesc) lblModalDesc.innerHTML = t.modalDesc;
+        if (lblModalKey) lblModalKey.textContent = t.modalKey;
+        if (clearKeyBtn) clearKeyBtn.textContent = t.modalClear;
+        if (saveKeyBtn) saveKeyBtn.textContent = t.modalSave;
+
+        // Re-render suggestion chips
+        if (suggestionsBox) {
+          suggestionsBox.innerHTML = t.chips.map(c => `
+            <button class="chat-suggestion-chip" data-query="${escapeHtml(c.query)}">
+              ${escapeHtml(c.label)}
+            </button>
+          `).join('');
+        }
+
+        updateUserInfo();
+        renderMessages();
+      }
+
+      // Listen for navbar language switcher clicks
+      document.addEventListener('click', (e) => {
+        const langBtn = e.target.closest('[data-lang]');
+        if (langBtn) {
+          const lang = langBtn.dataset.lang;
+          if (lang && lang !== currentLang) {
+            updateLanguage(lang);
+          }
+        }
+      });
+
+      // 4. Render Functions
+      function renderSidebar() {
+        sessionsTodayEl.innerHTML = '';
+        sessionsOlderEl.innerHTML = '';
+
+        const now = new Date();
+        const todayStr = now.toDateString();
+
+        let olderCount = 0;
+
+        sessions.forEach(sess => {
+          const sessDate = new Date(sess.createdAt);
+          const isToday = sessDate.toDateString() === todayStr;
+
+          const item = document.createElement('div');
+          item.className = 'chat-session-link' + (sess.id === currentSessionId ? ' active' : '');
+          item.innerHTML = `
+            <span class="chat-session-text" title="${escapeHtml(sess.title)}">${escapeHtml(sess.title)}</span>
+            <button class="chat-session-del" title="O'chirish" data-id="${sess.id}">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          `;
+
+          item.addEventListener('click', (e) => {
+            if (e.target.closest('.chat-session-del')) return;
+            switchSession(sess.id);
+          });
+
+          const delBtn = item.querySelector('.chat-session-del');
+          delBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            deleteSession(sess.id);
+          });
+
+          if (isToday) {
+            sessionsTodayEl.appendChild(item);
+          } else {
+            olderCount++;
+            sessionsOlderEl.appendChild(item);
+          }
+        });
+
+        olderTitleEl.style.display = olderCount > 0 ? 'block' : 'none';
+      }
+
+      function getCurrentSession() {
+        return sessions.find(s => s.id === currentSessionId) || sessions[0];
+      }
+
+      function formatMarkdown(text) {
+        if (!text) return '';
+        let html = escapeHtml(text);
+
+        // Bold: **text**
+        html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+        // Italic: *text*
+        html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+        // DOI badge: `10.xxxx/xxxx` or `code`
+        html = html.replace(/`([^`]+)`/g, function (match, p1) {
+          if (p1.startsWith('10.') || p1.includes('/rcga.')) {
+            return `<a href="publications.html" class="doi-badge" title="Nashrni ko'rish">DOI: ${p1} ↗</a>`;
+          }
+          return `<code class="doi-badge">${p1}</code>`;
+        });
+
+        // Convert lists and paragraphs
+        const lines = html.split('\n');
+        let inList = false;
+        let listType = 'ul';
+        let res = [];
+
+        for (let line of lines) {
+          const trimmed = line.trim();
+          const olMatch = trimmed.match(/^(\d+)\.\s+(.*)$/);
+          const ulMatch = trimmed.match(/^[-•*]\s+(.*)$/);
+
+          if (olMatch) {
+            if (!inList || listType !== 'ol') {
+              if (inList) res.push(`</${listType}>`);
+              res.push('<ol>');
+              inList = true;
+              listType = 'ol';
+            }
+            res.push(`<li>${olMatch[2]}</li>`);
+          } else if (ulMatch) {
+            if (!inList || listType !== 'ul') {
+              if (inList) res.push(`</${listType}>`);
+              res.push('<ul>');
+              inList = true;
+              listType = 'ul';
+            }
+            res.push(`<li>${ulMatch[1]}</li>`);
+          } else {
+            if (inList) {
+              res.push(`</${listType}>`);
+              inList = false;
+            }
+            if (trimmed.length > 0) {
+              res.push(`<p>${trimmed}</p>`);
+            }
+          }
+        }
+        if (inList) res.push(`</${listType}>`);
+
+        return res.join('');
+      }
+
+      function escapeHtml(str) {
+        return (str || '').replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function renderMessages() {
+        const session = getCurrentSession();
+        const t = I18N[currentLang] || I18N.uz;
+
+        sessionTitleEl.textContent = session.title || t.defaultTitle;
+        messagesContainer.innerHTML = '';
+
+        session.messages.forEach(msg => {
+          const msgEl = document.createElement('div');
+          msgEl.className = 'chat-msg ' + msg.role;
+
+          if (msg.role === 'user') {
+            msgEl.innerHTML = `
+              <div class="chat-msg-avatar">S</div>
+              <div class="chat-msg-content">
+                <div class="chat-msg-header">
+                  <span class="chat-msg-sender">${t.senderYou}</span>
+                </div>
+                <div class="chat-msg-text">
+                  <p>${escapeHtml(msg.content)}</p>
+                </div>
+              </div>
+            `;
+          } else {
+            let sourcesHTML = '';
+            if (msg.sources && msg.sources.length > 0) {
+              sourcesHTML = `
+                <div class="chat-sources-block">
+                  <div class="chat-sources-title">${t.sourcesTitle}</div>
+                  <div class="chat-sources-list">
+                    ${msg.sources.map(s => `
+                      <a href="${s.url || 'publications.html'}" class="chat-source-item">
+                        📄 ${escapeHtml(s.title)} ${s.doi ? `(DOI: ${s.doi})` : ''} ↗
+                      </a>
+                    `).join('')}
+                  </div>
+                </div>
+              `;
+            }
+
+            msgEl.innerHTML = `
+              <div class="chat-msg-avatar">R</div>
+              <div class="chat-msg-content">
+                <div class="chat-msg-header">
+                  <span class="chat-msg-sender">RCGA Assistant</span>
+                  <span class="chat-badge-ai">AI</span>
+                </div>
+                <div class="chat-msg-text">
+                  ${formatMarkdown(msg.content)}
+                  ${sourcesHTML}
+                </div>
+              </div>
+            `;
+          }
+
+          messagesContainer.appendChild(msgEl);
+        });
+
+        chatThread.scrollTop = chatThread.scrollHeight;
+      }
+
+      function switchSession(id) {
+        currentSessionId = id;
+        localStorage.setItem(ACTIVE_SESSION_KEY, id);
+        renderSidebar();
+        renderMessages();
+      }
+
+      function deleteSession(id) {
+        if (sessions.length <= 1) {
+          createNewSession();
+          return;
+        }
+        sessions = sessions.filter(s => s.id !== id);
+        if (currentSessionId === id) {
+          currentSessionId = sessions[0].id;
+          localStorage.setItem(ACTIVE_SESSION_KEY, currentSessionId);
+        }
+        saveSessions(sessions);
+        renderSidebar();
+        renderMessages();
+      }
+
+      function createNewSession() {
+        const t = I18N[currentLang] || I18N.uz;
+        const newSess = {
+          id: 'session-' + Date.now(),
+          title: t.defaultTitle,
+          createdAt: new Date().toISOString(),
+          messages: []
+        };
+        sessions.unshift(newSess);
+        currentSessionId = newSess.id;
+        localStorage.setItem(ACTIVE_SESSION_KEY, currentSessionId);
+        saveSessions(sessions);
+        renderSidebar();
+        renderMessages();
+        textarea.focus();
+      }
+
+      // 5. Send Message Logic
+      async function handleSend() {
+        const text = textarea.value.trim();
+        if (!text) return;
+
+        const session = getCurrentSession();
+        const t = I18N[currentLang] || I18N.uz;
+
+        // Rename session if default title
+        if (session.messages.length === 0 || session.title === "Yangi suhbat" || session.title === "Новый диалог" || session.title === "New chat") {
+          session.title = text.length > 38 ? text.substring(0, 38) + '...' : text;
+          sessionTitleEl.textContent = session.title;
+        }
+
+        // Add user message
+        const userMsg = {
+          role: "user",
+          content: text,
+          timestamp: new Date().toISOString()
+        };
+        session.messages.push(userMsg);
+        saveSessions(sessions);
+        renderSidebar();
+        renderMessages();
+
+        textarea.value = '';
+        textarea.style.height = 'auto';
+        sendBtn.disabled = true;
+
+        // Add typing indicator
+        const typingEl = document.createElement('div');
+        typingEl.className = 'chat-msg assistant typing-msg';
+        typingEl.innerHTML = `
+          <div class="chat-msg-avatar">R</div>
+          <div class="chat-msg-content">
+            <div class="chat-msg-header">
+              <span class="chat-msg-sender">RCGA Assistant</span>
+              <span class="chat-badge-ai">AI</span>
+            </div>
+            <div class="chat-typing">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+        `;
+        messagesContainer.appendChild(typingEl);
+        chatThread.scrollTop = chatThread.scrollHeight;
+
+        try {
+          // Prepare history
+          const historyPayload = session.messages.slice(-6).map(m => ({
+            role: m.role,
+            content: m.content
+          }));
+
+          // Pass currentLang so AI answers in selected language
+          const responseData = await RCGA_API.askAI(text, currentLang, historyPayload);
+          typingEl.remove();
+
+          const assistantMsg = {
+            role: "assistant",
+            content: responseData.response,
+            timestamp: new Date().toISOString(),
+            sources: responseData.relevant_sources || []
+          };
+          session.messages.push(assistantMsg);
+          saveSessions(sessions);
+          renderMessages();
+        } catch (err) {
+          typingEl.remove();
+          const errorMsg = {
+            role: "assistant",
+            content: t.error,
+            timestamp: new Date().toISOString()
+          };
+          session.messages.push(errorMsg);
+          saveSessions(sessions);
+          renderMessages();
+        }
+      }
+
+      // Auto-resize textarea and enable button
+      textarea.addEventListener('input', () => {
+        textarea.style.height = 'auto';
+        textarea.style.height = Math.min(textarea.scrollHeight, 160) + 'px';
+        sendBtn.disabled = !textarea.value.trim();
+      });
+
+      // Keypress shortcuts: Enter sends, Shift+Enter new line
+      textarea.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          handleSend();
+        }
+      });
+
+      // Shortcut: Cmd/Ctrl + N for new chat
+      window.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'n') {
+          e.preventDefault();
+          createNewSession();
+        }
+      });
+
+      sendBtn.addEventListener('click', handleSend);
+      newChatBtn.addEventListener('click', createNewSession);
+
+      // Suggestions chips delegation
+      if (suggestionsBox) {
+        suggestionsBox.addEventListener('click', (e) => {
+          const chip = e.target.closest('.chat-suggestion-chip');
+          if (chip) {
+            textarea.value = chip.dataset.query;
+            textarea.dispatchEvent(new Event('input'));
+            handleSend();
+          }
+        });
+      }
+
+      // Toggle Sidebar (mobile / responsive)
+      if (toggleSidebarBtn) {
+        toggleSidebarBtn.addEventListener('click', () => {
+          sidebar.classList.toggle('open');
+        });
+      }
+
+      // Export chat to clipboard
+      if (exportBtn) {
+        exportBtn.addEventListener('click', () => {
+          const session = getCurrentSession();
+          const t = I18N[currentLang] || I18N.uz;
+          let transcript = `RCGA ASSISTANT CHAT TRANSCRIPT\n${session.title}\n${new Date().toLocaleString()}\n----------------------------------------\n\n`;
+          session.messages.forEach(m => {
+            const role = m.role === 'user' ? t.senderYou : 'RCGA Assistant';
+            transcript += `[${role}]:\n${m.content}\n\n`;
+          });
+          navigator.clipboard.writeText(transcript).then(() => {
+            alert(currentLang === 'ru' ? "Диалог скопирован в буфер обмена!" : (currentLang === 'en' ? "Chat copied to clipboard!" : "Suhbat to'liq nusxalandi!"));
+          }).catch(() => {
+            alert("Nusxalashda xatolik.");
+          });
+        });
+      }
+
+      // AI Settings Modal
+      const settingsModal = document.getElementById('settings-modal');
+      const openSettingsBtn = document.getElementById('open-settings-btn');
+      const closeSettingsBtn = document.getElementById('close-settings-btn');
+      const geminiInput = document.getElementById('gemini-key-input');
+      const saveKeyBtn = document.getElementById('save-key-btn');
+      const clearKeyBtn = document.getElementById('clear-key-btn');
+
+      if (openSettingsBtn) {
+        openSettingsBtn.addEventListener('click', () => {
+          geminiInput.value = localStorage.getItem('rcga_ai_key') || '';
+          settingsModal.classList.add('open');
+        });
+      }
+      if (closeSettingsBtn) {
+        closeSettingsBtn.addEventListener('click', () => settingsModal.classList.remove('open'));
+      }
+      if (settingsModal) {
+        settingsModal.addEventListener('click', (e) => {
+          if (e.target === settingsModal) settingsModal.classList.remove('open');
+        });
+      }
+      if (saveKeyBtn) {
+        saveKeyBtn.addEventListener('click', () => {
+          const val = geminiInput.value.trim();
+          if (val) {
+            localStorage.setItem('rcga_ai_key', val);
+            alert(currentLang === 'ru' ? "Ключ Gemini API сохранен!" : (currentLang === 'en' ? "Gemini API key saved!" : "Gemini API kaliti saqlandi!"));
+          }
+          settingsModal.classList.remove('open');
+        });
+      }
+      if (clearKeyBtn) {
+        clearKeyBtn.addEventListener('click', () => {
+          localStorage.removeItem('rcga_ai_key');
+          geminiInput.value = '';
+          alert(currentLang === 'ru' ? "Ключ удален. Используется движок RCGA Agro-Expert RAG." : (currentLang === 'en' ? "Key cleared. Using RCGA Agro-Expert RAG engine." : "Kalit tozalandi. Tizim RCGA Agro-Expert RAG tizimidan foydalanadi."));
+          settingsModal.classList.remove('open');
+        });
+      }
+
+      // Initial Render & Setup Language
+      renderSidebar();
+      updateLanguage(currentLang);
+
+      // If query was passed in URL, send it!
+      if (queryPrompt) {
+        textarea.value = queryPrompt;
+        textarea.dispatchEvent(new Event('input'));
+        handleSend();
+      }
+
+    })();
+  </script>
+</body>
+
+</html>

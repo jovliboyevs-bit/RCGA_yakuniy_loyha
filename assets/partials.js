@@ -21,6 +21,7 @@
       { id: 'events', label_uz: 'Tadbirlar', label_en: 'Events', label_ru: 'События', href: 'events.html' },
       { id: 'institutions', label_uz: 'Muassasalar', label_en: 'Institutions', label_ru: 'Учреждения', href: 'institutions.html' },
       { id: 'search', label_uz: 'Qidiruv', label_en: 'Search', label_ru: 'Поиск', href: 'search.html' },
+      { id: 'chat', label_uz: 'Chat', label_en: 'Chat', label_ru: 'Чат', href: 'chat.html' },
     ];
 
     if (isAdmin) {
@@ -132,4 +133,15 @@
   const footerMount = document.getElementById('footer-mount');
   if (navMount) navMount.outerHTML = navHTML(active, dark);
   if (footerMount) footerMount.outerHTML = footerHTML();
+
+  // Load floating chatbot widget on all pages except full-screen chat.html
+  if (active !== 'chat') {
+    const existingWidget = document.getElementById('rcga-chatbot-script');
+    if (!existingWidget) {
+      const widgetScript = document.createElement('script');
+      widgetScript.id = 'rcga-chatbot-script';
+      widgetScript.src = 'assets/chatbot-widget.js';
+      document.body.appendChild(widgetScript);
+    }
+  }
 })();

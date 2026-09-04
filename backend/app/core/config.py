@@ -14,6 +14,10 @@ class Settings(BaseSettings):
     # CORS
     BACKEND_CORS_ORIGINS: list[str] = ["*"]
 
+    # AI Keys (Optional - if provided via env, will use Gemini/OpenAI)
+    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
+    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
+
     class Config:
         case_sensitive = True
 
