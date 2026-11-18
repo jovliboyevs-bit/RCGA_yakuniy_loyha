@@ -12,19 +12,24 @@ from backend.app.api.v1.endpoints.auth import get_current_user
 router = APIRouter()
 
 def check_admin(user: User):
-    if user.role not in ["Super Admin", "Content Editor"]:
-        raise HTTPException(status_code=403, detail="Ushbu amal faqat Admin yoki Content Editor uchun ruxsat etilgan.")
+    r = str(user.role).upper().replace(" ", "")
+    if r not in ["SUPERADMIN", "MODERATOR", "CONTENTEDITOR"]:
+        raise HTTPException(status_code=403, detail="Ushbu amal faqat Admin yoki Moderator uchun ruxsat etilgan.")
 
 def check_super_admin(user: User):
-    if user.role != "Super Admin":
+    r = str(user.role).upper().replace(" ", "")
+    if r != "SUPERADMIN":
         raise HTTPException(status_code=403, detail="Ushbu amal faqat Super Admin uchun ruxsat etilgan (Foydalanuvchilarni boshqarish huquqi).")
 
 VALID_ROLES = [
+    "SUPERADMIN",
+    "MODERATOR",
+    "RESEARCHER",
+    "FARMER",
+    "USER",
     "Super Admin",
     "Content Editor",
-    "Researcher",
     "Student",
-    "Farmer",
     "Institutional Member"
 ]
 

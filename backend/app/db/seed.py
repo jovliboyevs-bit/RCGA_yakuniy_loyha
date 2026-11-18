@@ -15,145 +15,176 @@ def seed_db():
 
     try:
         # 1. Super Admin User
-        if not db.query(User).filter(User.email == "admin@rcga.org").first():
+        admin_user = db.query(User).filter(User.email == "admin@rcga.org").first()
+        if not admin_user:
             admin = User(
                 email="admin@rcga.org",
                 full_name="RCGA Administrator",
-                hashed_password=get_password_hash("admin123"),
-                role="Super Admin",
+                hashed_password=get_password_hash("Admin2026!#"),
+                role="SUPERADMIN",
                 organization="Regional Center for Green Agriculture",
-                country="UZ"
+                country="UZ",
+                is_verified=True
             )
             db.add(admin)
-            print("Added admin user (admin@rcga.org / admin123)")
+            print("Added admin user (admin@rcga.org / Admin2026!#)")
+        else:
+            admin_user.role = "SUPERADMIN"
+            admin_user.is_verified = True
+            db.commit()
 
-        # 2. Seed News
+        # 2. Seed Multilingual News
         if db.query(News).count() == 0:
             news_items = [
                 News(
-                    title_uz="Orolbo'yi Mintaqasida Sho'rlangan Tuproqlarni Tiklash Bo'yicha Yangi Xalqaro Loyiha Boshlandi",
-                    title_en="New International Project Launched to Restore Saline Soils in Aral Sea Region",
+                    title={
+                        "uz": "Orolbo'yi Mintaqasida Sho'rlangan Tuproqlarni Tiklash Bo'yicha Yangi Xalqaro Loyiha Boshlandi",
+                        "ru": "В Приаралье запущен новый международный проект по восстановлению засоленных почв",
+                        "en": "New International Project Launched to Restore Saline Soils in Aral Sea Region",
+                        "kk": "Арал өңірінде тұзданған топырақты қалпына келтіру бойынша жаңа халықаралық жоба басталды"
+                    },
                     category="Mintaqaviy",
-                    excerpt_uz="RCGA va CAREC hamkorligida Aral dengizi basseynida iqlimga chidamli bio-amaliyotlarni joriy etishga qaratilgan 4 yillik dastur tajriba maydonlarida ish boshladi.",
-                    content_uz="RCGA va CAREC hamkorligida Aral dengizi basseynida iqlimga chidamli bio-amaliyotlarni joriy etishga qaratilgan 4 yillik dastur tajriba maydonlarida ish boshladi. Ushbu dastur doirasida 500 dan ortiq fermer xo'jaliklari sho'rlangan yerlarda halofit o'simliklarini yetishtirish bo'yicha amaliy ko'nikmalarga ega bo'ladi.",
+                    excerpt={
+                        "uz": "RCGA va CAREC hamkorligida Aral dengizi basseynida iqlimga chidamli bio-amaliyotlarni joriy etishga qaratilgan 4 yillik dastur tajriba maydonlarida ish boshladi.",
+                        "ru": "При сотрудничестве RCGA и CAREC стартовала 4-летняя программа по внедрению климатически устойчивых биопрактик в бассейне Аральского моря.",
+                        "en": "In cooperation with RCGA and CAREC, a 4-year initiative introducing climate-resilient practices has started in Aral Sea basin pilot fields.",
+                        "kk": "RCGA мен CAREC серіктестігінде Арал теңізі бассейнінде климатқа бейімделген био-тәжірибелерді енгізу бойынша 4 жылдық бағдарлама басталды."
+                    },
+                    content={
+                        "uz": "RCGA va CAREC hamkorligida Aral dengizi basseynida iqlimga chidamli bio-amaliyotlarni joriy etishga qaratilgan 4 yillik dastur tajriba maydonlarida ish boshladi. Ushbu dastur doirasida 500 dan ortiq fermer xo'jaliklari sho'rlangan yerlarda halofit o'simliklarini yetishtirish bo'yicha amaliy ko'nikmalarga ega bo'ladi.",
+                        "ru": "При сотрудничестве RCGA и CAREC стартовала 4-летняя программа по внедрению климатически устойчивых биопрактик в бассейне Аральского моря. Более 500 фермерских хозяйств освоят методы выращивания галофитов.",
+                        "en": "In cooperation with RCGA and CAREC, a 4-year initiative introducing climate-resilient practices has started in Aral Sea basin pilot fields. Over 500 farms will gain skills in growing halophyte crops.",
+                        "kk": "RCGA мен CAREC серіктестігінде Арал теңізі бассейнінде 500-ден астам шаруа қожалығы галофит өсімдіктерін өсіру бойынша тәжірибе жинақтайды."
+                    },
                     image_url="assets/aral-sea-conservation.jpg",
                     author="RCGA Press Office",
-                    is_featured=True
+                    is_featured=True,
+                    slug="orolboyi-tuproqlarni-tiklash-loyihasi"
                 ),
                 News(
-                    title_uz="Farg'ona Vodiysida Tomchilatib Sug'orish Texnologiyalari Samadorligi 40% Ga Oshdi",
-                    title_en="Drip Irrigation Efficiency Increases by 40% in Fergana Valley",
+                    title={
+                        "uz": "Farg'ona Vodiysida Tomchilatib Sug'orish Texnologiyalari Samadorligi 40% Ga Oshdi",
+                        "ru": "Эффективность капельного орошения в Ферганской долине выросла на 40%",
+                        "en": "Drip Irrigation Efficiency Increases by 40% in Fergana Valley",
+                        "kk": "Ферғана аңғарында тамшылатып суару тиімділігі 40%-ға өсті"
+                    },
                     category="Texnologiya",
-                    excerpt_uz="Aqlli datchiklar va avtomatlashtirilgan gidro-monitoring tizimlari suv sarfini keskin kamaytirish bilan birga hosildorlikni oshirmoqda.",
-                    content_uz="Aqlli datchiklar va avtomatlashtirilgan gidro-monitoring tizimlari suv sarfini keskin kamaytirish bilan birga hosildorlikni oshirmoqda. TDAU va RCGA mutaxassislari tomonidan o'tkazilgan tahlillar shuni ko'rsatdiki...",
+                    excerpt={
+                        "uz": "Aqlli datchiklar va avtomatlashtirilgan gidro-monitoring tizimlari suv sarfini keskin kamaytirish bilan birga hosildorlikni oshirmoqda.",
+                        "ru": "Умные датчики и автоматизированный гидромониторинг существенно экономят воду при росте урожайности.",
+                        "en": "Smart IoT sensors and automated hydro-monitoring systems dramatically reduce water waste while boosting yield.",
+                        "kk": "Ақылды датчиктер мен автоматтандырылған гидро-мониторинг су үнемдеумен бірге өнімділікті арттыруда."
+                    },
+                    content={
+                        "uz": "Aqlli datchiklar va avtomatlashtirilgan gidro-monitoring tizimlari suv sarfini keskin kamaytirish bilan birga hosildorlikni oshirmoqda. TDAU va RCGA mutaxassislari tomonidan o'tkazilgan tahlillar shuni ko'rsatdiki...",
+                        "ru": "Умные датчики и автоматизированный гидромониторинг существенно экономят воду при росте урожайности. Анализ ученых ТГАУ и RCGA подтвердил эффективность инноваций...",
+                        "en": "Smart IoT sensors and automated hydro-monitoring systems dramatically reduce water waste while boosting yield. Joint field trials by Tashkent State Agrarian University and RCGA confirm major efficiency gains...",
+                        "kk": "Ақылды датчиктер мен автоматтандырылған гидро-мониторинг су үнемдеумен бірге өнімділікті арттыруда. ТДАУ мен RCGA ғалымдарының талдаулары осыны дәлелдеді..."
+                    },
                     image_url="assets/farmer-healthy-soil.jpg",
                     author="Dr. Kamola Alimova",
-                    is_featured=False
-                ),
-                News(
-                    title_uz="Markaziy Osiyo Agrar Universitetlari Konsorsiumi Yangi Tadqiqot Tarmog'ini Yo'lga Qo'ydi",
-                    title_en="Central Asian Agrarian Universities Consortium Launches New Research Network",
-                    category="Innovatsiya",
-                    excerpt_uz="TIIAME, Qazaq Milliy Agrar Universiteti va Qirg'iziston Agrar Universiteti o'rtasida uch tomonlama kelishuv imzolandi.",
-                    content_uz="TIIAME, Qazaq Milliy Agrar Universiteti va Qirg'iziston Agrar Universiteti o'rtasida uch tomonlama kelishuv imzolandi.",
-                    image_url="assets/uzbek-china-lab.jpg",
-                    author="RCGA Academic Board",
-                    is_featured=False
+                    is_featured=False,
+                    slug="fargona-tomchilatib-sugorish"
                 )
             ]
             db.add_all(news_items)
-            print("Added news seed items.")
+            print("Added multilingual news seed items.")
 
-        # 3. Seed Publications
+        # 3. Seed Multilingual Publications
         if db.query(Publication).count() == 0:
             pubs = [
                 Publication(
-                    title_uz="Markaziy Osiyo Qishloq Xo'jaligida Suv Resurslarini Boshqarish va Iqlim Risklari",
-                    title_en="Water Resources Management and Climate Risks in Central Asian Agriculture",
+                    title={
+                        "uz": "Markaziy Osiyo Qishloq Xo'jaligida Suv Resurslarini Boshqarish va Iqlim Risklari",
+                        "ru": "Управление водными ресурсами и климатические риски в сельском хозяйстве Центральной Азии",
+                        "en": "Water Resources Management and Climate Risks in Central Asian Agriculture",
+                        "kk": "Орталық Азия ауыл шаруашылығындағы су ресурстарын басқару және климаттық қатерлер"
+                    },
                     category="Iqlim",
                     authors="Prof. D. Ergashev, Dr. K. Alimova, M. Saparov",
                     doi="10.1016/j.agwat.2026.10824",
-                    abstract_uz="Ushbu tadqiqotda CAREC mintaqasining 8 ta mamlakatida so'nggi 20 yildagi gidrologik o'zgarishlar va iqlim ssenariylari tahlil qilingan.",
+                    abstract={
+                        "uz": "Ushbu tadqiqotda CAREC mintaqasining 8 ta mamlakatida so'nggi 20 yildagi gidrologik o'zgarishlar va iqlim ssenariylari tahlil qilingan.",
+                        "ru": "В данном исследовании анализируются гидрологические изменения и климатические сценарии в 8 странах региона ЦАРЭС за последние 20 лет.",
+                        "en": "This research evaluates hydrological transformations and climate risk models across 8 CAREC member countries over the last two decades.",
+                        "kk": "Бұл зерттеуде соңғы 20 жылдағы ЦАРЭС өңіріндегі гидрологиялық өзгерістер мен климаттық сценарийлер талданған."
+                    },
                     cover_image="assets/central-asia-climate.jpg",
                     published_year=2026,
                     downloads_count=342,
                     views_count=1280,
                     citations_count=18,
                     is_featured=True
-                ),
-                Publication(
-                    title_uz="Sho'rlangan Tuproqlarda Halofit Ekinlarini Yetishtirish Bo'yicha Metodik Qo'llanma",
-                    title_en="Methodological Guide for Growing Halophyte Crops on Saline Soils",
-                    category="Tuproq",
-                    authors="Dr. Kamola Alimova, FAO Expert Group",
-                    doi="10.1080/09064710.2025.21098",
-                    abstract_uz="Halofitlar va tuzi yuqori bo'lgan hududlarda agro-biotexnologiyalardan foydalanish metodologiyasi.",
-                    cover_image="assets/hand-soil-planting.jpg",
-                    published_year=2025,
-                    downloads_count=512,
-                    views_count=2100,
-                    citations_count=42,
-                    is_featured=True
-                ),
-                Publication(
-                    title_uz="Raqamli Agrosanoat: Sensorlar va Sun'iy Intelekt Yordamida Ekin Monitoringi",
-                    title_en="Digital Agro-industry: Crop Monitoring via Sensors and AI",
-                    category="Raqamli agrotex",
-                    authors="Sirojiddin Yusupov, RCGA Tech Lab",
-                    doi="10.1109/AGRI-AI.2026.90112",
-                    abstract_uz="Dronlar va sun'iy yo'ldosh tasvirlari yordamida ekinlar kasalliklarini barvaqt aniqlash modeli.",
-                    cover_image="assets/agri-service-center.jpg",
-                    published_year=2026,
-                    downloads_count=890,
-                    views_count=3400,
-                    citations_count=29,
-                    is_featured=False
                 )
             ]
             db.add_all(pubs)
-            print("Added publication seed items.")
+            print("Added multilingual publication seed items.")
 
-        # 4. Seed Events
+        # 4. Seed Multilingual Events
         if db.query(Event).count() == 0:
             events = [
                 Event(
-                    title_uz="Markaziy Osiyo Yashil Qishloq Xo'jaligi Xalqaro Forum 2026",
-                    title_en="Central Asia Green Agriculture International Forum 2026",
-                    location="Toshkent, O'zbekiston (Gidrid / Onlayn)",
+                    title={
+                        "uz": "Markaziy Osiyo Yashil Qishloq Xo'jaligi Xalqaro Forum 2026",
+                        "ru": "Международный форум по зеленому сельскому хозяйству Центральной Азии 2026",
+                        "en": "Central Asia Green Agriculture International Forum 2026",
+                        "kk": "Орталық Азия жасыл ауыл шаруашылығы халықаралық форумы 2026"
+                    },
+                    location="Toshkent, O'zbekiston (Gibrid / Onlayn)",
                     event_date=datetime.now() + timedelta(days=20),
                     category="Forum",
                     status="upcoming",
-                    description_uz="Mintaqaviy olimlar, hukumat vakillari va xalqaro tashkilotlarning yillik iqlim va agrosanoat sammiti.",
+                    description={
+                        "uz": "Mintaqaviy olimlar, hukumat vakillari va xalqaro tashkilotlarning yillik iqlim va agrosanoat sammiti.",
+                        "ru": "Ежегодный саммит региональных ученых, представителей правительств и международных институтов по вопросам климата и агробизнеса.",
+                        "en": "Annual international summit connecting regional scientists, policymakers, and green agriculture stakeholders.",
+                        "kk": "Аймақтық ғалымдар, үкімет өкілдері және халықаралық ұйымдардың жыл сайынғы климат және агробизнес саммиті."
+                    },
                     image_url="assets/conference-people.jpg",
                     is_featured=True
-                ),
-                Event(
-                    title_uz="Agro-biotexnologiya va Tuproq Mikrobiomasi Bo'yicha Master-Klass",
-                    title_en="Masterclass on Agro-biotechnology and Soil Microbiome",
-                    location="Ostona, Qozog'iston (QazNAU)",
-                    event_date=datetime.now() + timedelta(days=45),
-                    category="O'quv kursi",
-                    status="upcoming",
-                    description_uz="Yosh olimlar va fermerlar uchun tuproq unumdorligini bio-o'g'itlar orqali oshirish bo'yicha amaliy o'quv kursi.",
-                    image_url="assets/young-scientist-school.jpg",
-                    is_featured=False
                 )
             ]
             db.add_all(events)
-            print("Added event seed items.")
+            print("Added multilingual event seed items.")
 
-        # 5. Seed Institutions
+        # 5. Seed Multilingual Institutions
         if db.query(Institution).count() == 0:
             insts = [
-                Institution(name="TIIAME — Toshkent Irrigatsiya va Qishloq Xo'jaligini Mechanizatsiyalash Muhandislari Instituti", country="UZ", country_name_uz="O'zbekiston", type="University", website="https://tiiame.uz"),
-                Institution(name="TDAU — Toshkent Davlat Agrar Universiteti", country="UZ", country_name_uz="O'zbekiston", type="University", website="https://tdau.uz"),
-                Institution(name="QazNAU — Qazaq Milliy Agrar Tadqiqot Universiteti", country="KZ", country_name_uz="Qozog'iston", type="University", website="https://kaznau.kz"),
-                Institution(name="KNAU — Qirg'iziston Milliy Agrar Universiteti", country="KG", country_name_uz="Qirg'iziston", type="University", website="https://knau.kg"),
-                Institution(name="TAU — Tojikiston Agrar Universiteti", country="TJ", country_name_uz="Tojikiston", type="University", website="https://tau.tj"),
-                Institution(name="FAO Uzbekistan — BMT Qishloq Xo'jaligi Tashkiloti", country="UZ", country_name_uz="O'zbekiston", type="International Org", website="https://fao.org")
+                Institution(
+                    name={
+                        "uz": "TIIAME — Toshkent Irrigatsiya va Qishloq Xo'jaligini Mechanizatsiyalash Muhandislari Instituti",
+                        "en": "TIIAME — Tashkent Institute of Irrigation and Agricultural Mechanization Engineers",
+                        "ru": "ТИИИМСХ — Ташкентский институт инженеров ирригации и механизации сельского хозяйства"
+                    },
+                    country="UZ",
+                    country_name={
+                        "uz": "O'zbekiston",
+                        "en": "Uzbekistan",
+                        "ru": "Узбекистан"
+                    },
+                    type="University",
+                    website="https://tiiame.uz"
+                ),
+                Institution(
+                    name={
+                        "uz": "QazNAU — Qazaq Milliy Agrar Tadqiqot Universiteti",
+                        "en": "KazNAU — Kazakh National Agrarian Research University",
+                        "ru": "КазНАУ — Казахский национальный аграрный исследовательский университет",
+                        "kk": "ҚазҰАУ — Қазақ ұлттық аграрлық зерттеу университеті"
+                    },
+                    country="KZ",
+                    country_name={
+                        "uz": "Qozog'iston",
+                        "en": "Kazakhstan",
+                        "ru": "Казахстан",
+                        "kk": "Қазақстан"
+                    },
+                    type="University",
+                    website="https://kaznau.kz"
+                )
             ]
             db.add_all(insts)
-            print("Added institution seed items.")
+            print("Added multilingual institution seed items.")
 
         db.commit()
         print("Database seeding completed successfully.")

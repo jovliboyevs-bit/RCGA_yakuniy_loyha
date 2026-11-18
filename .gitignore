@@ -1,19 +1,51 @@
 # Virtual Environment
 venv/
+.venv/
 env/
 ENV/
-.venv/
+env.bak/
+venv.bak/
 
-# Python cache
+# Environment Variables & Secrets
+.env
+.env.*
+!.env.example
+
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 
-# IDE
-.vscode/
-.idea/
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+rcga.db
+backend/rcga.db
 
-# OS files
+# User Uploads & Media (keep directory with .gitkeep)
+backend/uploads/*
+!backend/uploads/.gitkeep
+uploads/
+**/uploads/*
+!**/uploads/.gitkeep
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE & OS files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# Logs & temp
+*.log
+scratch/

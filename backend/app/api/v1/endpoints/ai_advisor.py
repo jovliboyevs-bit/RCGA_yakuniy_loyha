@@ -5,7 +5,7 @@ import requests
 from typing import List, Dict, Any, Optional
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from sqlalchemy import or_
+from sqlalchemy import or_, cast, String
 
 from backend.app.schemas.ai import AIChatRequest, AIChatResponse, AIChatSource
 from backend.app.db.database import get_db
@@ -26,8 +26,8 @@ def fetch_db_context(query: str, db: Session, limit: int = 5) -> Dict[str, Any]:
         filters = []
         for w in words[:3]:
             pattern = f"%{w}%"
-            filters.append(Publication.title_uz.ilike(pattern))
-            filters.append(Publication.abstract_uz.ilike(pattern))
+            filters.append(cast(Publication.title, String).ilike(pattern))
+            filters.append(cast(Publication.abstract, String).ilike(pattern))
             filters.append(Publication.category.ilike(pattern))
         pub_query = pub_query.filter(or_(*filters))
     
