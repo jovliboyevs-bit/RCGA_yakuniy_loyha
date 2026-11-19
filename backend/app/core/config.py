@@ -40,6 +40,18 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str = ""
     GEMINI_API_KEY: str = ""
 
+    # Storage & File Uploads (Local or MinIO/S3)
+    UPLOAD_DIR: str = os.path.join(_BACKEND_DIR, "uploads")
+    MAX_IMAGE_SIZE_MB: int = 5
+    MAX_DOCUMENT_SIZE_MB: int = 25
+    STORAGE_BACKEND: str = "local"  # "local" or "s3"
+    S3_ENDPOINT_URL: Union[str, None] = None  # e.g. "http://localhost:9000" for MinIO
+    S3_ACCESS_KEY: Union[str, None] = None
+    S3_SECRET_KEY: Union[str, None] = None
+    S3_BUCKET_NAME: str = "rcga-media"
+    S3_REGION_NAME: str = "us-east-1"
+    S3_PUBLIC_URL_PREFIX: Union[str, None] = None
+
     # CORS Origins
     CORS_ORIGINS: Union[str, List[str]] = ["*"]
 
@@ -67,6 +79,14 @@ class Settings(BaseSettings):
     @property
     def BACKEND_CORS_ORIGINS(self) -> List[str]:
         return self.CORS_ORIGINS
+
+    @property
+    def MAX_IMAGE_SIZE_BYTES(self) -> int:
+        return self.MAX_IMAGE_SIZE_MB * 1024 * 1024
+
+    @property
+    def MAX_DOCUMENT_SIZE_BYTES(self) -> int:
+        return self.MAX_DOCUMENT_SIZE_MB * 1024 * 1024
 
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:

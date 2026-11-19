@@ -54,6 +54,8 @@ UPLOADS_DIR = os.path.join(BACKEND_DIR, "uploads")
 
 # Mount uploads directory
 os.makedirs(UPLOADS_DIR, exist_ok=True)
+os.makedirs(os.path.join(UPLOADS_DIR, "images"), exist_ok=True)
+os.makedirs(os.path.join(UPLOADS_DIR, "publications"), exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=UPLOADS_DIR), name="uploads")
 
 # Mount frontend directory for static HTML, CSS, JS and assets serving
