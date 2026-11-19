@@ -12,3 +12,4 @@ class PaginatedResponse(BaseModel, Generic[T]):
 
     class Config:
         from_attributes = True
+
