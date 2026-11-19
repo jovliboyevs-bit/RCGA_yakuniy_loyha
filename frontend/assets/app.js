@@ -139,10 +139,14 @@ function rcgaInit() {
       });
     });
 
-    // Translate DOM elements with data-[lang] attributes
-    const attr = `data-${lang}`;
-    document.querySelectorAll(`[${attr}]`).forEach(el => {
-      const val = el.getAttribute(attr);
+    // Update CAREC select dropdown if present
+    document.querySelectorAll('#carec-lang-select, .carec-select').forEach(sel => {
+      sel.value = lang;
+    });
+
+    // Translate DOM elements with data-[lang] attributes (with fallback to en or uz)
+    document.querySelectorAll('[data-uz], [data-en], [data-ru], [data-kk], [data-ky], [data-tg], [data-tk]').forEach(el => {
+      const val = el.getAttribute(`data-${lang}`) || el.getAttribute('data-en') || el.getAttribute('data-uz');
       if (val) {
         if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
           el.placeholder = val;
@@ -153,7 +157,18 @@ function rcgaInit() {
         }
       }
     });
+
+    // Dispatch custom event for dynamic components (chatbot, charts, etc.)
+    window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
+
+    // Re-fetch dynamic lists on pages if functions exist
+    if (typeof loadNews === 'function') { try { loadNews(); } catch(_) {} }
+    if (typeof loadPublications === 'function') { try { loadPublications(); } catch(_) {} }
+    if (typeof loadEvents === 'function') { try { loadEvents(); } catch(_) {} }
+    if (typeof loadInstitutions === 'function') { try { loadInstitutions(); } catch(_) {} }
   }
+
+  window.applyLanguage = applyLanguage;
 
   document.querySelectorAll('.lang-switch').forEach(group => {
     group.querySelectorAll('button').forEach(b => {

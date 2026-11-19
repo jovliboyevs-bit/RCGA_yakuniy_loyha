@@ -55,10 +55,28 @@
             `).join('')}
           </ul>
           <div class="nav-right">
-            <div class="lang-switch" role="tablist" aria-label="Language">
-              <button data-lang="uz" class="active">UZ</button>
-              <button data-lang="ru">RU</button>
-              <button data-lang="en">EN</button>
+            <div class="lang-selector-group">
+              <div class="lang-switch" role="tablist" aria-label="Tezkor til tanlash">
+                <button data-lang="uz" title="O'zbekcha">UZ</button>
+                <button data-lang="ru" title="Русский">RU</button>
+                <button data-lang="en" title="English">EN</button>
+              </div>
+              <div class="carec-lang-dropdown">
+                <select id="carec-lang-select" class="carec-select" aria-label="CAREC Tillari" title="Barcha CAREC mintaqaviy tillari" onchange="window.applyLanguage ? window.applyLanguage(this.value) : null">
+                  <option value="" disabled selected>🌐 CAREC...</option>
+                  <option value="uz">🇺🇿 O'zbekcha (UZ)</option>
+                  <option value="kk">🇰🇿 Қазақша (KK)</option>
+                  <option value="ky">🇰🇬 Кыргызча (KY)</option>
+                  <option value="tg">🇹🇯 Тоҷикӣ (TG)</option>
+                  <option value="tk">🇹🇲 Türkmençe (TK)</option>
+                  <option value="az">🇦🇿 Azərbaycan (AZ)</option>
+                  <option value="ge">🇬🇪 ქართული (GE)</option>
+                  <option value="mn">🇲🇳 Монгол (MN)</option>
+                  <option value="zh">🇨🇳 中文 (ZH)</option>
+                  <option value="ru">🇷🇺 Русский (RU)</option>
+                  <option value="en">🇬🇧 English (EN)</option>
+                </select>
+              </div>
             </div>
             ${authBtnHTML}
           </div>

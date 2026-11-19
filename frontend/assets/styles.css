@@ -291,6 +291,7 @@ em {
 }
 
 .nav-right { display: flex; align-items: center; gap: 16px; }
+.lang-selector-group { display: flex; align-items: center; gap: 8px; }
 .lang-switch {
   display: flex;
   gap: 2px;
@@ -319,6 +320,34 @@ em {
 .lang-switch button.active {
   background: var(--green-700);
   color: #fff;
+}
+.carec-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: rgba(0,0,0,0.04);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 999px;
+  padding: 5px 26px 5px 10px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  color: inherit;
+  cursor: pointer;
+  outline: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2210%22%20height%3D%226%22%20viewBox%3D%220%200%2010%206%22%3E%3Cpath%20fill%3D%22%23555%22%20d%3D%22M0%200l5%206%205-6z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  transition: all 0.2s;
+}
+.nav.dark:not(.scrolled) .carec-select {
+  background-color: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.2);
+  color: #fff;
+}
+.carec-select:hover, .carec-select:focus {
+  border-color: var(--green-700);
+  background-color: #fff;
+  color: var(--ink-900);
 }
 
 /* ===================== BUTTONS ===================== */

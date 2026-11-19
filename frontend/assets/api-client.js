@@ -36,9 +36,11 @@ const RCGA_API = {
     return await res.json();
   },
 
-  // News (Pagination, Sorting, Filtering)
-  async getNews(category = '', limit = 10, page = 1, sortBy = '-published_at', dateFrom = '', dateTo = '', country = '') {
+  // News (Pagination, Sorting, Filtering, i18n)
+  async getNews(category = '', limit = 10, page = 1, sortBy = '-published_at', dateFrom = '', dateTo = '', country = '', lang = '') {
+    const activeLang = lang || localStorage.getItem('rcga_lang') || 'uz';
     const url = new URL(`${window.location.origin}${API_BASE}/news`);
+    url.searchParams.append('lang', activeLang);
     if (category && category !== 'barchasi') url.searchParams.append('category', category);
     if (country) url.searchParams.append('country', country);
     if (dateFrom) url.searchParams.append('date_from', dateFrom);
@@ -58,9 +60,11 @@ const RCGA_API = {
     return items;
   },
 
-  // Publications (Pagination, Sorting, Filtering)
-  async getPublications(category = '', search = '', limit = 10, page = 1, sortBy = '-created_at', dateFrom = '', dateTo = '', country = '') {
+  // Publications (Pagination, Sorting, Filtering, i18n)
+  async getPublications(category = '', search = '', limit = 10, page = 1, sortBy = '-created_at', dateFrom = '', dateTo = '', country = '', lang = '') {
+    const activeLang = lang || localStorage.getItem('rcga_lang') || 'uz';
     const url = new URL(`${window.location.origin}${API_BASE}/publications`);
+    url.searchParams.append('lang', activeLang);
     if (category && category !== 'barchasi') url.searchParams.append('category', category);
     if (search) url.searchParams.append('search', search);
     if (country) url.searchParams.append('country', country);
@@ -81,9 +85,11 @@ const RCGA_API = {
     return items;
   },
 
-  // Events (Pagination, Sorting, Filtering)
-  async getEvents(category = '', limit = 10, page = 1, sortBy = 'event_date', dateFrom = '', dateTo = '', country = '', status = '') {
+  // Events (Pagination, Sorting, Filtering, i18n)
+  async getEvents(category = '', limit = 10, page = 1, sortBy = 'event_date', dateFrom = '', dateTo = '', country = '', status = '', lang = '') {
+    const activeLang = lang || localStorage.getItem('rcga_lang') || 'uz';
     const url = new URL(`${window.location.origin}${API_BASE}/events`);
+    url.searchParams.append('lang', activeLang);
     if (category && category !== 'barchasi') url.searchParams.append('category', category);
     if (country) url.searchParams.append('country', country);
     if (status) url.searchParams.append('status', status);
@@ -117,9 +123,11 @@ const RCGA_API = {
     return await res.json();
   },
 
-  // Institutions (Pagination, Sorting, Filtering)
-  async getInstitutions(country = '', category = '', limit = 50, page = 1, sortBy = 'id') {
+  // Institutions (Pagination, Sorting, Filtering, i18n)
+  async getInstitutions(country = '', category = '', limit = 50, page = 1, sortBy = 'id', lang = '') {
+    const activeLang = lang || localStorage.getItem('rcga_lang') || 'uz';
     const url = new URL(`${window.location.origin}${API_BASE}/institutions`);
+    url.searchParams.append('lang', activeLang);
     if (country) url.searchParams.append('country', country);
     if (category && category !== 'barchasi') url.searchParams.append('category', category);
     if (sortBy) url.searchParams.append('sort_by', sortBy);
@@ -137,9 +145,11 @@ const RCGA_API = {
     return items;
   },
 
-  // Search
-  async search(query, type = 'all') {
+  // Search (i18n)
+  async search(query, type = 'all', lang = '') {
+    const activeLang = lang || localStorage.getItem('rcga_lang') || 'uz';
     const url = new URL(`${window.location.origin}${API_BASE}/search`);
+    url.searchParams.append('lang', activeLang);
     url.searchParams.append('q', query);
     if (type) url.searchParams.append('type', type);
     const res = await fetch(url);
