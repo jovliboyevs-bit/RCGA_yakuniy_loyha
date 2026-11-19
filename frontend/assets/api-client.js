@@ -36,32 +36,72 @@ const RCGA_API = {
     return await res.json();
   },
 
-  // News
-  async getNews(category = '', limit = 10) {
+  // News (Pagination, Sorting, Filtering)
+  async getNews(category = '', limit = 10, page = 1, sortBy = '-published_at', dateFrom = '', dateTo = '', country = '') {
     const url = new URL(`${window.location.origin}${API_BASE}/news`);
     if (category && category !== 'barchasi') url.searchParams.append('category', category);
-    url.searchParams.append('limit', limit);
+    if (country) url.searchParams.append('country', country);
+    if (dateFrom) url.searchParams.append('date_from', dateFrom);
+    if (dateTo) url.searchParams.append('date_to', dateTo);
+    if (sortBy) url.searchParams.append('sort_by', sortBy);
+    url.searchParams.append('page', page);
+    url.searchParams.append('size', limit);
     const res = await fetch(url);
-    return res.ok ? await res.json() : [];
+    if (!res.ok) return [];
+    const data = await res.json();
+    if (Array.isArray(data)) return data;
+    const items = data.items || [];
+    items.total = data.total;
+    items.page = data.page;
+    items.size = data.size;
+    items.pages = data.pages;
+    return items;
   },
 
-  // Publications
-  async getPublications(category = '', search = '', limit = 10) {
+  // Publications (Pagination, Sorting, Filtering)
+  async getPublications(category = '', search = '', limit = 10, page = 1, sortBy = '-created_at', dateFrom = '', dateTo = '', country = '') {
     const url = new URL(`${window.location.origin}${API_BASE}/publications`);
     if (category && category !== 'barchasi') url.searchParams.append('category', category);
     if (search) url.searchParams.append('search', search);
-    url.searchParams.append('limit', limit);
+    if (country) url.searchParams.append('country', country);
+    if (dateFrom) url.searchParams.append('date_from', dateFrom);
+    if (dateTo) url.searchParams.append('date_to', dateTo);
+    if (sortBy) url.searchParams.append('sort_by', sortBy);
+    url.searchParams.append('page', page);
+    url.searchParams.append('size', limit);
     const res = await fetch(url);
-    return res.ok ? await res.json() : [];
+    if (!res.ok) return [];
+    const data = await res.json();
+    if (Array.isArray(data)) return data;
+    const items = data.items || [];
+    items.total = data.total;
+    items.page = data.page;
+    items.size = data.size;
+    items.pages = data.pages;
+    return items;
   },
 
-  // Events
-  async getEvents(category = '', limit = 10) {
+  // Events (Pagination, Sorting, Filtering)
+  async getEvents(category = '', limit = 10, page = 1, sortBy = 'event_date', dateFrom = '', dateTo = '', country = '', status = '') {
     const url = new URL(`${window.location.origin}${API_BASE}/events`);
     if (category && category !== 'barchasi') url.searchParams.append('category', category);
-    url.searchParams.append('limit', limit);
+    if (country) url.searchParams.append('country', country);
+    if (status) url.searchParams.append('status', status);
+    if (dateFrom) url.searchParams.append('date_from', dateFrom);
+    if (dateTo) url.searchParams.append('date_to', dateTo);
+    if (sortBy) url.searchParams.append('sort_by', sortBy);
+    url.searchParams.append('page', page);
+    url.searchParams.append('size', limit);
     const res = await fetch(url);
-    return res.ok ? await res.json() : [];
+    if (!res.ok) return [];
+    const data = await res.json();
+    if (Array.isArray(data)) return data;
+    const items = data.items || [];
+    items.total = data.total;
+    items.page = data.page;
+    items.size = data.size;
+    items.pages = data.pages;
+    return items;
   },
 
   async registerForEvent(eventId, fullName, email, organization) {
@@ -77,12 +117,24 @@ const RCGA_API = {
     return await res.json();
   },
 
-  // Institutions
-  async getInstitutions(country = '') {
+  // Institutions (Pagination, Sorting, Filtering)
+  async getInstitutions(country = '', category = '', limit = 50, page = 1, sortBy = 'id') {
     const url = new URL(`${window.location.origin}${API_BASE}/institutions`);
     if (country) url.searchParams.append('country', country);
+    if (category && category !== 'barchasi') url.searchParams.append('category', category);
+    if (sortBy) url.searchParams.append('sort_by', sortBy);
+    url.searchParams.append('page', page);
+    url.searchParams.append('size', limit);
     const res = await fetch(url);
-    return res.ok ? await res.json() : [];
+    if (!res.ok) return [];
+    const data = await res.json();
+    if (Array.isArray(data)) return data;
+    const items = data.items || [];
+    items.total = data.total;
+    items.page = data.page;
+    items.size = data.size;
+    items.pages = data.pages;
+    return items;
   },
 
   // Search

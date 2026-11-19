@@ -3,13 +3,15 @@ from typing import List, Optional, Any
 from backend.app.schemas.publication import PublicationResponse
 from backend.app.schemas.news import NewsResponse
 from backend.app.schemas.event import EventResponse
+from backend.app.schemas.institution import InstitutionResponse
 
 class SearchResult(BaseModel):
     query: str
     total_matches: int
-    publications: List[PublicationResponse]
-    news: List[NewsResponse]
-    events: List[EventResponse]
+    publications: List[PublicationResponse] = []
+    news: List[NewsResponse] = []
+    events: List[EventResponse] = []
+    institutions: Optional[List[InstitutionResponse]] = []
 
 class StatsResponse(BaseModel):
     countries_count: int = 8

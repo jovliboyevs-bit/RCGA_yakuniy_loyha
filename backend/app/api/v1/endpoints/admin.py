@@ -1,13 +1,23 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional, Union
 from backend.app.db.database import get_db
 from backend.app.models.user import User
 from backend.app.models.news import News
 from backend.app.models.publication import Publication
 from backend.app.models.event import Event, EventRegistration
-from backend.app.schemas.user import UserResponse
+from backend.app.schemas.user import UserResponse, PaginatedUserResponse
 from backend.app.api.v1.endpoints.auth import get_current_user
+from backend.app.core.pagination import paginate_query, apply_sorting
+
+USER_SORT_FIELDS = {
+    "created_at": User.created_at,
+    "id": User.id,
+    "email": User.email,
+    "full_name": User.full_name,
+    "role": User.role,
+    "country": User.country
+}
 
 router = APIRouter()
 
@@ -44,10 +54,41 @@ def get_admin_stats(current_user: User = Depends(get_current_user), db: Session 
         "registrations_count": db.query(EventRegistration).count()
     }
 
-@router.get("/users", response_model=List[UserResponse])
-def get_all_users(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+@router.get("/users", response_model=Union[PaginatedUserResponse, List[UserResponse]], summary="Get users with optional pagination, sorting and filtering")
+def get_all_users(
+    page: Optional[int] = Query(None, ge=1, description="Sahifa raqami (agar sahifalash talab qilinsa)"),
+    size: int = Query(50, ge=1, le=100, description="Har sahifadagi foydalanuvchilar soni"),
+    role: Optional[str] = Query(None, description="Rol bo'yicha filtr"),
+    country: Optional[str] = Query(None, description="CAREC davlati kodi"),
+    q: Optional[str] = Query(None, description="Ism yoki email bo'yicha qidiruv"),
+    sort_by: Optional[str] = Query("-created_at", description="Saralash ustuni: created_at, -created_at, email, full_name, role"),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
     check_admin(current_user)
-    return db.query(User).order_by(User.created_at.desc()).all()
+    query = db.query(User)
+
+    if role and role.lower() not in ["barchasi", "all"]:
+        query = query.filter(User.role.ilike(f"%{role}%"))
+    if country and country.lower() not in ["barchasi", "all"]:
+        query = query.filter(User.country == country.upper())
+    if q:
+        q_pat = f"%{q}%"
+        query = query.filter((User.full_name.ilike(q_pat)) | (User.email.ilike(q_pat)))
+
+    query = apply_sorting(query, sort_by, USER_SORT_FIELDS, User.created_at, default_order="desc")
+
+    if page is not None:
+        paged_query, meta = paginate_query(query, page=page, size=size)
+        return {
+            "items": paged_query.all(),
+            "total": meta["total"],
+            "page": meta["page"],
+            "size": meta["size"],
+            "pages": meta["pages"]
+        }
+
+    return query.limit(size).all()
 
 @router.put("/users/{user_id}/role")
 def update_user_role(user_id: int, role: str, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):

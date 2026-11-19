@@ -157,3 +157,4 @@ class StorageManager:
         return backend.delete(filename, subfolder)
 
 storage_manager = StorageManager()
+

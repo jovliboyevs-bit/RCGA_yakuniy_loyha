@@ -1,6 +1,7 @@
 from pydantic import BaseModel, model_validator
-from typing import Optional, Dict, Union, Any
+from typing import Optional, Dict, Union, Any, List
 from datetime import datetime
+from backend.app.schemas.pagination import PaginatedResponse
 
 class NewsBase(BaseModel):
     category: str
@@ -53,6 +54,22 @@ class NewsCreate(NewsBase):
                 } or {"uz": ""}
         return values
 
+class NewsUpdate(BaseModel):
+    category: Optional[str] = None
+    title: Optional[Union[Dict[str, str], str]] = None
+    excerpt: Optional[Union[Dict[str, str], str]] = None
+    content: Optional[Union[Dict[str, str], str]] = None
+    image_url: Optional[str] = None
+    author: Optional[str] = None
+    is_featured: Optional[bool] = None
+
+    # Legacy fields
+    title_uz: Optional[str] = None
+    title_ru: Optional[str] = None
+    title_en: Optional[str] = None
+    excerpt_uz: Optional[str] = None
+    content_uz: Optional[str] = None
+
 class NewsResponse(NewsBase):
     id: int
     slug: Optional[str] = None
@@ -66,3 +83,6 @@ class NewsResponse(NewsBase):
 
     class Config:
         from_attributes = True
+
+class PaginatedNewsResponse(PaginatedResponse[NewsResponse]):
+    pass

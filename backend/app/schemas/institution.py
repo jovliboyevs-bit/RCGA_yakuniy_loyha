@@ -1,5 +1,6 @@
 from pydantic import BaseModel, model_validator
-from typing import Optional, Dict, Union, Any
+from typing import Optional, Dict, Union, Any, List
+from backend.app.schemas.pagination import PaginatedResponse
 
 class InstitutionBase(BaseModel):
     country: str # UZ, KZ, KG, TJ, TM, AF, AZ, GE, PK, MN, CN
@@ -43,6 +44,20 @@ class InstitutionCreate(InstitutionBase):
                 }
         return values
 
+class InstitutionUpdate(BaseModel):
+    country: Optional[str] = None
+    type: Optional[str] = None
+    website: Optional[str] = None
+    logo_url: Optional[str] = None
+    is_partner: Optional[bool] = None
+
+    name: Optional[Union[Dict[str, str], str]] = None
+    country_name: Optional[Union[Dict[str, str], str]] = None
+    description: Optional[Union[Dict[str, str], str]] = None
+
+    country_name_uz: Optional[str] = None
+    description_uz: Optional[str] = None
+
 class InstitutionResponse(InstitutionBase):
     id: int
     name_i18n: Optional[Dict[str, str]] = None
@@ -51,3 +66,6 @@ class InstitutionResponse(InstitutionBase):
 
     class Config:
         from_attributes = True
+
+class PaginatedInstitutionResponse(PaginatedResponse[InstitutionResponse]):
+    pass

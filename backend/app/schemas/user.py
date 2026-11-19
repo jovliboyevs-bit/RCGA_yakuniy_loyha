@@ -1,8 +1,9 @@
 import re
-from typing import Optional
+from typing import Optional, List, Union
 from datetime import datetime
 from pydantic import BaseModel, EmailStr, field_validator
 from backend.app.models.user import UserRole, CAREC_COUNTRIES
+from backend.app.schemas.pagination import PaginatedResponse
 
 class UserBase(BaseModel):
     email: EmailStr
@@ -80,3 +81,6 @@ class TokenRefreshRequest(BaseModel):
 
 class MessageResponse(BaseModel):
     detail: str
+
+class PaginatedUserResponse(PaginatedResponse[UserResponse]):
+    pass

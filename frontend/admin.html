@@ -527,7 +527,8 @@
         tbody.innerHTML = `<tr><td colspan="6" style="color: var(--rust);">Foydalanuvchilarni yuklashda xatolik yuz berdi.</td></tr>`;
         return;
       }
-      const users = await res.json();
+      const rawUsers = await res.json();
+      const users = Array.isArray(rawUsers) ? rawUsers : (rawUsers.items || []);
       tbody.innerHTML = users.map(u => {
         const isSelf = user && user.id === u.id;
         let roleControl = '';

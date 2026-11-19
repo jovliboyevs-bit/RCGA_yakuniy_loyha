@@ -1,6 +1,7 @@
 from pydantic import BaseModel, model_validator
-from typing import Optional, Dict, Union, Any
+from typing import Optional, Dict, Union, Any, List
 from datetime import datetime
+from backend.app.schemas.pagination import PaginatedResponse
 
 class PublicationBase(BaseModel):
     category: str
@@ -45,6 +46,23 @@ class PublicationCreate(PublicationBase):
                 }
         return values
 
+class PublicationUpdate(BaseModel):
+    category: Optional[str] = None
+    authors: Optional[str] = None
+    doi: Optional[str] = None
+    file_url: Optional[str] = None
+    cover_image: Optional[str] = None
+    published_year: Optional[int] = None
+    is_featured: Optional[bool] = None
+
+    title: Optional[Union[Dict[str, str], str]] = None
+    abstract: Optional[Union[Dict[str, str], str]] = None
+
+    title_uz: Optional[str] = None
+    title_ru: Optional[str] = None
+    title_en: Optional[str] = None
+    abstract_uz: Optional[str] = None
+
 class PublicationResponse(PublicationBase):
     id: int
     downloads_count: int
@@ -57,3 +75,6 @@ class PublicationResponse(PublicationBase):
 
     class Config:
         from_attributes = True
+
+class PaginatedPublicationResponse(PaginatedResponse[PublicationResponse]):
+    pass

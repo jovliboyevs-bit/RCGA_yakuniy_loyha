@@ -1,6 +1,7 @@
 from pydantic import BaseModel, EmailStr, model_validator
-from typing import Optional, Dict, Union, Any
+from typing import Optional, Dict, Union, Any, List
 from datetime import datetime
+from backend.app.schemas.pagination import PaginatedResponse
 
 class EventBase(BaseModel):
     location: str
@@ -45,6 +46,23 @@ class EventCreate(EventBase):
                 }
         return values
 
+class EventUpdate(BaseModel):
+    location: Optional[str] = None
+    event_date: Optional[datetime] = None
+    category: Optional[str] = None
+    status: Optional[str] = None
+    image_url: Optional[str] = None
+    is_featured: Optional[bool] = None
+    organizer: Optional[str] = None
+
+    title: Optional[Union[Dict[str, str], str]] = None
+    description: Optional[Union[Dict[str, str], str]] = None
+
+    title_uz: Optional[str] = None
+    title_ru: Optional[str] = None
+    title_en: Optional[str] = None
+    description_uz: Optional[str] = None
+
 class EventResponse(EventBase):
     id: int
     title_i18n: Optional[Dict[str, str]] = None
@@ -52,6 +70,9 @@ class EventResponse(EventBase):
 
     class Config:
         from_attributes = True
+
+class PaginatedEventResponse(PaginatedResponse[EventResponse]):
+    pass
 
 class EventRegistrationCreate(BaseModel):
     full_name: str
