@@ -1,5 +1,19 @@
 // RCGA — interactions, animations, scroll effects
 
+// Ensure i18n-engine is loaded across all pages
+if (typeof window !== 'undefined' && !window.RCGA_I18N && !window._loadingI18n) {
+  window._loadingI18n = true;
+  const s = document.createElement('script');
+  s.src = 'assets/i18n-engine.js';
+  s.onload = () => {
+    try {
+      const savedLang = localStorage.getItem('rcga_lang') || 'uz';
+      if (window.applyLanguage) window.applyLanguage(savedLang);
+    } catch (_) {}
+  };
+  document.head.appendChild(s);
+}
+
 function rcgaInit() {
   const nav = document.querySelector('.nav');
 
@@ -132,7 +146,7 @@ function rcgaInit() {
     if (!lang) return;
     try { localStorage.setItem('rcga_lang', lang); } catch(_){}
     
-    // Update button active state
+    // Update button active state (UZ, RU, EN)
     document.querySelectorAll('.lang-switch').forEach(group => {
       group.querySelectorAll('button').forEach(b => {
         b.classList.toggle('active', b.dataset.lang === lang);
@@ -144,24 +158,34 @@ function rcgaInit() {
       sel.value = lang;
     });
 
-    // Translate DOM elements with data-[lang] attributes (with fallback to en or uz)
-    document.querySelectorAll('[data-uz], [data-en], [data-ru], [data-kk], [data-ky], [data-tg], [data-tk]').forEach(el => {
-      const val = el.getAttribute(`data-${lang}`) || el.getAttribute('data-en') || el.getAttribute('data-uz');
-      if (val) {
-        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-          el.placeholder = val;
-        } else if (val.includes('<') && val.includes('>')) {
-          el.innerHTML = val;
-        } else {
-          el.textContent = val;
+    // 1. In-memory dictionary & native attribute translation
+    if (window.RCGA_I18N && typeof window.RCGA_I18N.translateDOMWithDict === 'function') {
+      window.RCGA_I18N.translateDOMWithDict(lang);
+    } else {
+      document.querySelectorAll('[data-uz], [data-en], [data-ru]').forEach(el => {
+        let val = el.getAttribute(`data-${lang}`);
+        if (!val) {
+          if (lang === 'ru') val = el.getAttribute('data-ru');
+          else if (lang === 'en') val = el.getAttribute('data-en');
+          else if (lang === 'uz') val = el.getAttribute('data-uz');
         }
-      }
-    });
+        if (val) {
+          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val;
+          else if (val.includes('<') && val.includes('>')) el.innerHTML = val;
+          else el.textContent = val;
+        }
+      });
+    }
 
-    // Dispatch custom event for dynamic components (chatbot, charts, etc.)
+    // 2. Google Translate Automation for full page translation
+    if (window.RCGA_I18N && typeof window.RCGA_I18N.triggerGoogleTranslate === 'function') {
+      window.RCGA_I18N.triggerGoogleTranslate(lang);
+    }
+
+    // 3. Dispatch custom event for dynamic components (chatbot, charts, etc.)
     window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
 
-    // Re-fetch dynamic lists on pages if functions exist
+    // 4. Re-fetch dynamic lists on pages with ?lang query param
     if (typeof loadNews === 'function') { try { loadNews(); } catch(_) {} }
     if (typeof loadPublications === 'function') { try { loadPublications(); } catch(_) {} }
     if (typeof loadEvents === 'function') { try { loadEvents(); } catch(_) {} }

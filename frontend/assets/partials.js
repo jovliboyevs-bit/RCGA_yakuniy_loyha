@@ -1,6 +1,13 @@
 // Renders shared <nav> and <footer> for all pages by reading
 // data-page (active link) attribute from <body>.
 
+if (typeof document !== 'undefined' && !window.RCGA_I18N && !window._rcgaI18nScriptInjected) {
+  window._rcgaI18nScriptInjected = true;
+  const script = document.createElement('script');
+  script.src = 'assets/i18n-engine.js';
+  document.head.appendChild(script);
+}
+
 (function() {
   function getStoredUser() {
     try {

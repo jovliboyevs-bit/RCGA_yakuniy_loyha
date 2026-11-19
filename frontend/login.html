@@ -186,10 +186,28 @@
         <button id="tab-login" class="active" data-uz="Kirish" data-en="Sign in" data-ru="Вход">Kirish</button>
         <button id="tab-register" data-uz="Ro'yxatdan o'tish" data-en="Register" data-ru="Регистрация">Ro'yxatdan o'tish</button>
       </div>
-      <div class="lang-switch" style="display: flex; gap: 4px;">
-        <button class="lang-btn" data-lang="uz" style="padding: 4px 8px; font-size: 12px; border: 1px solid var(--ink-200); background: #fff; border-radius: 3px; cursor: pointer;">UZ</button>
-        <button class="lang-btn" data-lang="ru" style="padding: 4px 8px; font-size: 12px; border: 1px solid var(--ink-200); background: #fff; border-radius: 3px; cursor: pointer;">RU</button>
-        <button class="lang-btn" data-lang="en" style="padding: 4px 8px; font-size: 12px; border: 1px solid var(--ink-200); background: #fff; border-radius: 3px; cursor: pointer;">EN</button>
+      <div class="lang-selector-group">
+        <div class="lang-switch" style="display: flex; gap: 4px;">
+          <button class="lang-btn" data-lang="uz" style="padding: 4px 8px; font-size: 12px; border: 1px solid var(--ink-200); background: #fff; border-radius: 3px; cursor: pointer;">UZ</button>
+          <button class="lang-btn" data-lang="ru" style="padding: 4px 8px; font-size: 12px; border: 1px solid var(--ink-200); background: #fff; border-radius: 3px; cursor: pointer;">RU</button>
+          <button class="lang-btn" data-lang="en" style="padding: 4px 8px; font-size: 12px; border: 1px solid var(--ink-200); background: #fff; border-radius: 3px; cursor: pointer;">EN</button>
+        </div>
+        <div class="carec-lang-dropdown">
+          <select id="carec-lang-select" class="carec-select" aria-label="CAREC Tillari" title="Barcha CAREC mintaqaviy tillari" onchange="window.applyLanguage ? window.applyLanguage(this.value) : null">
+            <option value="" disabled selected>🌐 CAREC...</option>
+            <option value="uz">🇺🇿 O'zbekcha (UZ)</option>
+            <option value="kk">🇰🇿 Қазақша (KK)</option>
+            <option value="ky">🇰🇬 Кыргызча (KY)</option>
+            <option value="tg">🇹🇯 Тоҷикӣ (TG)</option>
+            <option value="tk">🇹🇲 Türkmençe (TK)</option>
+            <option value="az">🇦🇿 Azərbaycan (AZ)</option>
+            <option value="ge">🇬🇪 ქართული (GE)</option>
+            <option value="mn">🇲🇳 Монгол (MN)</option>
+            <option value="zh">🇨🇳 中文 (ZH)</option>
+            <option value="ru">🇷🇺 Русский (RU)</option>
+            <option value="en">🇬🇧 English (EN)</option>
+          </select>
+        </div>
       </div>
     </div>
 
