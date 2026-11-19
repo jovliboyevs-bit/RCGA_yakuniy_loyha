@@ -306,12 +306,18 @@
   const token = localStorage.getItem('rcga_token');
   const user = localStorage.getItem('rcga_user') ? JSON.parse(localStorage.getItem('rcga_user')) : null;
 
-  if (!user || (user.role !== 'Super Admin' && user.role !== 'Content Editor')) {
-    alert('Ushbu sahifaga kirish uchun Super Admin yoki Content Editor huquqi talab qilinadi.');
-    window.location.href = 'login.html';
+  function normRole(r) {
+    return String(r || '').toUpperCase().replace(/\s+/g, '').replace(/_/g, '');
   }
 
-  const isSuperAdmin = user && user.role === 'Super Admin';
+  const roleClean = user ? normRole(user.role) : '';
+  const isSuperAdmin = roleClean === 'SUPERADMIN';
+  const isEditor = isSuperAdmin || roleClean === 'MODERATOR' || roleClean === 'CONTENTEDITOR';
+
+  if (!user || !isEditor) {
+    alert('Ushbu sahifaga kirish uchun Super Admin yoki Content Editor (Moderator) huquqi talab qilinadi.');
+    window.location.href = 'login.html';
+  }
   const roleDisplay = document.getElementById('user-display');
   if (roleDisplay && user) {
     roleDisplay.textContent = `${user.full_name || user.email} (${user.role})`;
@@ -504,12 +510,13 @@
 
   // ============ USER MANAGEMENT (SUPER ADMIN) ============
   const ROLES_LIST = [
+    'SUPERADMIN',
+    'MODERATOR',
+    'RESEARCHER',
+    'FARMER',
+    'USER',
     'Super Admin',
-    'Content Editor',
-    'Researcher',
-    'Student',
-    'Farmer',
-    'Institutional Member'
+    'Content Editor'
   ];
 
   async function loadUsers() {
@@ -535,7 +542,7 @@
         let actionControl = '';
 
         if (isSuperAdmin) {
-          const options = ROLES_LIST.map(r => `<option value="${r}" ${u.role === r ? 'selected' : ''}>${r}</option>`).join('');
+          const options = ROLES_LIST.map(r => `<option value="${r}" ${normRole(u.role) === normRole(r) ? 'selected' : ''}>${r}</option>`).join('');
           roleControl = `
             <select class="role-select" onchange="changeUserRole(${u.id}, this.value, '${u.email}')">
               ${options}

@@ -11,7 +11,8 @@
 
   function navHTML(active, darkHero) {
     const user = getStoredUser();
-    const isAdmin = user && (user.role === 'Super Admin' || user.role === 'Content Editor');
+    const roleNorm = user && user.role ? String(user.role).toUpperCase().replace(/\s+/g, '').replace(/_/g, '') : '';
+    const isAdmin = roleNorm === 'SUPERADMIN' || roleNorm === 'MODERATOR' || roleNorm === 'CONTENTEDITOR';
 
     const links = [
       { id: 'home', label_uz: 'Bosh sahifa', label_en: 'Home', label_ru: 'Главная', href: 'index.html' },

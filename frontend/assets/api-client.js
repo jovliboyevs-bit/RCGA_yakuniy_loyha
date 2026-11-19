@@ -189,8 +189,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (emailInput && passwordInput) {
         try {
           const res = await RCGA_API.login(emailInput.value, passwordInput.value);
-          alert(`Xush kelibsiz, ${res.user.full_name || res.user.email}! (Rol: ${res.user.role})`);
-          window.location.href = 'index.html';
+          const r = String(res.user && res.user.role ? res.user.role : '').toUpperCase().replace(/\s+/g, '').replace(/_/g, '');
+          const isAdmin = r === 'SUPERADMIN' || r === 'MODERATOR' || r === 'CONTENTEDITOR';
+          if (isAdmin) {
+            window.location.href = 'admin.html';
+          } else {
+            window.location.href = 'index.html';
+          }
         } catch (err) {
           alert(`Xatolik: ${err.message}`);
         }
