@@ -1,3 +1,4 @@
+import { setHTML } from '../src/security';
 // RCGA Digital Platform — Universal Multilingual (i18n) Engine for CAREC Languages
 // Supports: UZ, KK, KY, TG, TK, AZ, GE (KA), MN, ZH, RU, EN
 
@@ -396,92 +397,12 @@
     if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
       el.placeholder = text;
     } else if (text.includes('<') && text.includes('>')) {
-      el.innerHTML = text;
+      setHTML(el, text);
     } else {
       el.textContent = text;
     }
   }
 
-  // 2. Google Translate Automation Bridge
-  function triggerGoogleTranslate(lang) {
-    const gtCode = GT_LANG_MAP[lang] || lang;
-
-    // Setup cookies
-    if (lang === 'uz') {
-      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      document.cookie = "googtrans=/auto/uz; path=/;";
-      document.cookie = "googtrans=/uz/uz; path=/;";
-    } else {
-      document.cookie = `googtrans=/auto/${gtCode}; path=/;`;
-      document.cookie = `googtrans=/uz/${gtCode}; path=/;`;
-    }
-
-    let retries = 0;
-    const maxRetries = 25;
-    const interval = setInterval(() => {
-      retries++;
-      const combo = document.querySelector('.goog-te-combo');
-      if (combo) {
-        if (combo.value !== gtCode) {
-          combo.value = gtCode;
-          combo.dispatchEvent(new Event('change'));
-        }
-        clearInterval(interval);
-      } else if (retries >= maxRetries) {
-        clearInterval(interval);
-      }
-    }, 150);
-  }
-
-  // 3. Initialize Google Translate Script
-  function initGoogleTranslate() {
-    if (window._rcgaGtLoaded) return;
-    window._rcgaGtLoaded = true;
-
-    // Create hidden container if missing
-    if (!document.getElementById('google_translate_element')) {
-      const div = document.createElement('div');
-      div.id = 'google_translate_element';
-      div.style.display = 'none';
-      document.body.appendChild(div);
-    }
-
-    window.googleTranslateElementInit = function () {
-      try {
-        new google.translate.TranslateElement({
-          pageLanguage: 'uz',
-          includedLanguages: 'uz,en,ru,kk,ky,tg,tk,az,ka,mn,zh-CN',
-          autoDisplay: false
-        }, 'google_translate_element');
-
-        const activeLang = localStorage.getItem('rcga_lang') || 'uz';
-        if (activeLang !== 'uz') {
-          setTimeout(() => triggerGoogleTranslate(activeLang), 300);
-        }
-      } catch (err) {
-        console.warn('Google Translate initialization notice:', err);
-      }
-    };
-
-    const s = document.createElement('script');
-    s.type = 'text/javascript';
-    s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-    s.async = true;
-    document.head.appendChild(s);
-  }
-
-  // Export engine
-  window.RCGA_I18N = {
-    dict: CAREC_DICT,
-    translateDOMWithDict: translateDOMWithDict,
-    triggerGoogleTranslate: triggerGoogleTranslate,
-    initGoogleTranslate: initGoogleTranslate
-  };
-
-  // Auto-init on DOM ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initGoogleTranslate);
-  } else {
-    initGoogleTranslate();
-  }
+  // Translation uses the bundled CAREC dictionary and page data attributes.
+  window.RCGA_I18N = { dict: CAREC_DICT, translateDOMWithDict };
 })();

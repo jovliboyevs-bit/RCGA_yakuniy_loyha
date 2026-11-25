@@ -1,7 +1,10 @@
+import { RCGA_API } from './api-client.js';
+import { setHTML, setMessageHTML } from '../src/security';
+import { getChatState } from '../src/browser-session';
 // RCGA Digital Platform — Floating AI Chatbot Widget (Multilingual UZ/RU/EN)
 // Matches screenshots 2 and 3: floating bottom-right launcher + popup card
 
-(function () {
+export function initWidget(scope) {
   // Prevent duplicate initialization or loading on full chat page
   if (document.getElementById('rcga-chatbot-root') || document.body.classList.contains('chat-page')) {
     return;
@@ -40,7 +43,7 @@
   // Create widget container
   const root = document.createElement('div');
   root.id = 'rcga-chatbot-root';
-  root.innerHTML = `
+  setHTML(root, `
     <!-- Floating Card (Popup) -->
     <div class="rcga-widget-card closed" id="rcga-widget-card" aria-hidden="true">
       <div class="rcga-widget-header">
@@ -94,9 +97,10 @@
         </svg>
       </span>
     </button>
-  `;
+  `);
 
   document.body.appendChild(root);
+  scope.onCleanup(() => root.remove());
 
   // Widget Elements
   const toggleBtn = document.getElementById('rcga-widget-toggle');
@@ -113,12 +117,25 @@
 
   let isOpen = false;
   let widgetMessages = [];
+  card.inert = true;
+  toggleBtn.setAttribute('aria-controls', card.id);
+  toggleBtn.setAttribute('aria-expanded', 'false');
+  const viewport = window.visualViewport;
+  function fitKeyboard() {
+    const inset = isOpen && viewport && viewport.scale === 1
+      ? Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop) : 0;
+    root.style.setProperty('--widget-keyboard', inset + 'px');
+  }
+  if (viewport) {
+    scope.listen(viewport, 'resize', fitKeyboard);
+    scope.listen(viewport, 'scroll', fitKeyboard);
+  }
 
   function applyWidgetLanguage(lang) {
     if (!WIDGET_I18N[lang]) lang = 'uz';
     currentLang = lang;
     const t = WIDGET_I18N[lang];
-    if (headlineEl) headlineEl.innerHTML = t.headline;
+    if (headlineEl) setHTML(headlineEl, t.headline);
     if (statusTxt) statusTxt.textContent = t.status;
     if (emptyPlaceholder && widgetMessages.length === 0) emptyPlaceholder.textContent = t.empty;
     if (input) input.placeholder = t.placeholder;
@@ -126,7 +143,7 @@
   }
 
   // Listen for language changes globally
-  document.addEventListener('click', (e) => {
+  scope.listen(document, 'click', (e) => {
     const langBtn = e.target.closest('[data-lang]');
     if (langBtn && langBtn.dataset.lang) {
       applyWidgetLanguage(langBtn.dataset.lang);
@@ -135,6 +152,9 @@
 
   function setOpen(open) {
     isOpen = open;
+    fitKeyboard();
+    card.inert = !open;
+    toggleBtn.setAttribute('aria-expanded', String(open));
     if (isOpen) {
       card.classList.remove('closed');
       card.classList.add('open');
@@ -142,7 +162,9 @@
       toggleBtn.classList.add('open');
       iconChat.style.display = 'none';
       iconClose.style.display = 'block';
-      setTimeout(() => input.focus(), 150);
+      if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        input.focus({ preventScroll: true });
+      }
     } else {
       card.classList.remove('open');
       card.classList.add('closed');
@@ -153,27 +175,26 @@
     }
   }
 
-  toggleBtn.addEventListener('click', () => setOpen(!isOpen));
+  scope.listen(toggleBtn, 'click', () => setOpen(!isOpen));
 
   // Input events
-  input.addEventListener('input', () => {
+  scope.listen(input, 'input', () => {
     sendBtn.disabled = !input.value.trim();
   });
 
-  input.addEventListener('keydown', (e) => {
+  scope.listen(input, 'keydown', (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       handleSend();
     }
   });
 
-  sendBtn.addEventListener('click', handleSend);
+  scope.listen(sendBtn, 'click', handleSend);
 
-  // "TO'LIQ EKRAN ↗" link passes current text or syncs session
-  fullscreenBtn.addEventListener('click', (e) => {
-    const text = input.value.trim();
-    if (text) {
-      fullscreenBtn.href = `chat.html?q=${encodeURIComponent(text)}`;
+  // Keep the draft in this tab when opening the full chat.
+  scope.listen(fullscreenBtn, 'click', (event) => {
+    if (event.button === 0 && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) {
+      getChatState().draft = input.value;
     }
   });
 
@@ -186,14 +207,14 @@
     msgEl.className = `rcga-widget-msg ${role}`;
 
     if (role === 'user') {
-      msgEl.innerHTML = `<div>${escapeHtml(content)}</div>`;
+      msgEl.textContent = content;
     } else {
       // Basic markdown bolding & formatting
       let formatted = escapeHtml(content)
         .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-        .replace(/`([^`]+)`/g, '<code class="doi-badge" style="font-size:11px;">$1</code>')
+        .replace(/`([^`]+)`/g, '<code class="doi-badge">$1</code>')
         .replace(/\n/g, '<br/>');
-      msgEl.innerHTML = `<div>${formatted}</div>`;
+      setMessageHTML(msgEl, `<div>${formatted}</div>`);
     }
 
     body.appendChild(msgEl);
@@ -213,30 +234,21 @@
     // Typing bubble
     const typingEl = document.createElement('div');
     typingEl.className = 'rcga-widget-msg assistant';
-    typingEl.innerHTML = `
+    setHTML(typingEl, `
       <div class="chat-typing" style="padding:4px 0;">
         <span class="typing-dot" style="width:5px; height:5px;"></span>
         <span class="typing-dot" style="width:5px; height:5px;"></span>
         <span class="typing-dot" style="width:5px; height:5px;"></span>
       </div>
-    `;
+    `);
     body.appendChild(typingEl);
     body.scrollTop = body.scrollHeight;
 
     const t = WIDGET_I18N[currentLang] || WIDGET_I18N.uz;
 
     try {
-      let res;
-      if (window.RCGA_API && window.RCGA_API.askAI) {
-        res = await window.RCGA_API.askAI(text, currentLang, widgetMessages.slice(-4));
-      } else {
-        const fetchRes = await fetch('/api/v1/ai/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text, language: currentLang })
-        });
-        res = fetchRes.ok ? await fetchRes.json() : { response: t.error };
-      }
+      const res = await RCGA_API.askAI(text, currentLang, widgetMessages.slice(-4), scope.signal);
+      if (!scope.active) return;
 
       typingEl.remove();
       const reply = res.response || "Javob olindi.";
@@ -257,4 +269,4 @@
 
   // Initial language setup
   applyWidgetLanguage(currentLang);
-})();
+}

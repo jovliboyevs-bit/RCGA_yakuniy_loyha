@@ -1,9 +1,38 @@
+import { navigateTo } from '../src/navigation';
+import { clearSession, getAIKey, getSession, removeLegacyCredentials, startSession } from '../src/browser-session';
 // RCGA API Client — Connects high-fidelity UI to FastAPI Backend
 const API_BASE = '/api/v1';
 
-const RCGA_API = {
+async function revokeToken(token) {
+  const res = await fetch(`${API_BASE}/auth/logout`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    signal: AbortSignal.timeout(6000),
+    keepalive: true,
+  });
+  if (!res.ok && res.status !== 401) throw new Error('Tokenni bekor qilishda xatolik.');
+}
+
+export function discardLegacySession() {
+  const token = removeLegacyCredentials();
+  if (token) void revokeToken(token).catch(() => {});
+}
+
+export async function signOut() {
+  const token = getSession()?.token;
+  clearSession();
+  navigateTo('/index.html');
+  if (!token) return;
+  try {
+    await revokeToken(token);
+  } catch {
+    alert('Brauzerda chiqdingiz. Server token bekor qilinganini tasdiqlamadi.');
+  }
+}
+
+export const RCGA_API = {
   // Auth
-  async login(email, password) {
+  async login(email, password, signal) {
     const formData = new URLSearchParams();
     formData.append('username', email);
     formData.append('password', password);
@@ -11,16 +40,18 @@ const RCGA_API = {
     const res = await fetch(`${API_BASE}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: formData
+      body: formData,
+      signal,
+      cache: 'no-store',
     });
     if (!res.ok) {
       const err = await res.json();
       throw new Error(err.detail || 'Kirishda xatolik yuz berdi');
     }
     const data = await res.json();
-    localStorage.setItem('rcga_token', data.access_token);
-    localStorage.setItem('rcga_user', JSON.stringify(data.user));
-    return data;
+    signal?.throwIfAborted();
+    startSession(data.access_token, data.user, data.expires_in);
+    return data.user;
   },
 
   async register(full_name, email, password, role = 'Farmer', organization = '', country = 'UZ') {
@@ -157,16 +188,17 @@ const RCGA_API = {
   },
 
   // AI Advisory Chat
-  async askAI(message, language = 'uz', history = [], apiKey = null) {
+  async askAI(message, language = 'uz', history = [], signal) {
     try {
-      const storedKey = apiKey || localStorage.getItem('rcga_ai_key') || '';
+      const storedKey = getAIKey();
       const payload = { message, language, history };
       if (storedKey) payload.api_key = storedKey;
       
       const res = await fetch(`${API_BASE}/ai/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        signal,
       });
       if (res.ok) {
         return await res.json();
@@ -188,26 +220,35 @@ const RCGA_API = {
 };
 
 // Auto-bind form event handlers if elements exist on DOM
-document.addEventListener('DOMContentLoaded', () => {
+export function bindAuthForms(scope) {
   // Login form handler
   const loginForm = document.querySelector('form#login-form') || document.querySelector('.login-card form');
   if (loginForm) {
-    loginForm.addEventListener('submit', async (e) => {
+    let pending = false;
+    scope.listen(loginForm, 'submit', async (e) => {
       e.preventDefault();
+      if (pending) return;
       const emailInput = loginForm.querySelector('input[type="email"]');
       const passwordInput = loginForm.querySelector('input[type="password"]');
       if (emailInput && passwordInput) {
+        const submitButton = loginForm.querySelector('button[type="submit"]');
+        pending = true;
+        if (submitButton) submitButton.disabled = true;
         try {
-          const res = await RCGA_API.login(emailInput.value, passwordInput.value);
-          const r = String(res.user && res.user.role ? res.user.role : '').toUpperCase().replace(/\s+/g, '').replace(/_/g, '');
+          const user = await RCGA_API.login(emailInput.value, passwordInput.value, scope.signal);
+          const r = user.role.toUpperCase().replace(/[\s_]/g, '');
           const isAdmin = r === 'SUPERADMIN' || r === 'MODERATOR' || r === 'CONTENTEDITOR';
           if (isAdmin) {
-            window.location.href = 'admin.html';
+            navigateTo('admin.html');
           } else {
-            window.location.href = 'index.html';
+            navigateTo('index.html');
           }
         } catch (err) {
+          if (!scope.active) return;
           alert(`Xatolik: ${err.message}`);
+        } finally {
+          pending = false;
+          if (submitButton) submitButton.disabled = false;
         }
       }
     });
@@ -216,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Register form handler
   const registerForm = document.querySelector('form#register-form');
   if (registerForm) {
-    registerForm.addEventListener('submit', async (e) => {
+    scope.listen(registerForm, 'submit', async (e) => {
       e.preventDefault();
       const nameInput = registerForm.querySelector('input[name="full_name"]');
       const emailInput = registerForm.querySelector('input[name="email"]');
@@ -231,11 +272,11 @@ document.addEventListener('DOMContentLoaded', () => {
             roleInput ? roleInput.value : 'Farmer'
           );
           alert(`Muvaffaqiyatli ro'yxatdan o'tdingiz! Tizimga kirishingiz mumkin.`);
-          window.location.href = 'login.html';
+          navigateTo('login.html');
         } catch (err) {
           alert(`Xatolik: ${err.message}`);
         }
       }
     });
   }
-});
+}
