@@ -1,77 +1,14 @@
+import './i18n-engine.js';
+import { setHTML } from '../src/security';
 // RCGA — interactions, animations, scroll effects
 
-// Ensure i18n-engine is loaded across all pages
-if (typeof window !== 'undefined' && !window.RCGA_I18N && !window._loadingI18n) {
-  window._loadingI18n = true;
-  const s = document.createElement('script');
-  s.src = 'assets/i18n-engine.js';
-  s.onload = () => {
-    try {
-      const savedLang = localStorage.getItem('rcga_lang') || 'uz';
-      if (window.applyLanguage) window.applyLanguage(savedLang);
-    } catch (_) {}
-  };
-  document.head.appendChild(s);
-}
-
-function rcgaInit() {
+export function rcgaInit(scope) {
   const nav = document.querySelector('.nav');
-
-  // ============ NAV SCROLL ============
-  const onScroll = () => {
-    if (!nav) return;
-    if (window.scrollY > 40) nav.classList.add('scrolled');
-    else nav.classList.remove('scrolled');
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
-  // ============ REVEAL ANIMATIONS (bulletproof scroll-based) ============
+  const progress = document.querySelector('.scroll-progress');
+  const heroMedia = document.querySelector('.hero-media');
+  const heroInner = document.querySelector('.hero-inner');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const revealSelector = '.reveal, .reveal-stagger, .reveal-up, .reveal-fade, .split-reveal, .reveal-image, .reveal-image-left, .reveal-line, .reveal-right, .reveal-zoom, .mask-reveal';
-
-  function checkReveals() {
-    const vh = window.innerHeight || document.documentElement.clientHeight || 800;
-    // Trigger BEFORE element enters visible range (generous) — bulletproof for iframes
-    const trigger = vh * 1.1;
-    document.querySelectorAll(revealSelector).forEach(el => {
-      if (el.classList.contains('in')) return;
-      const r = el.getBoundingClientRect();
-      if (r.top < trigger && r.bottom > -200) {
-        el.classList.add('in');
-      }
-    });
-  }
-
-  // Try IntersectionObserver first (better perf), fallback to scroll if unsupported
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('in');
-          io.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.05, rootMargin: '0px 0px -10% 0px' });
-    document.querySelectorAll(revealSelector).forEach(el => io.observe(el));
-  }
-
-  // Always also run scroll fallback — bulletproof against iframe quirks
-  window.addEventListener('scroll', checkReveals, { passive: true });
-  window.addEventListener('resize', checkReveals, { passive: true });
-  document.addEventListener('scroll', checkReveals, { passive: true, capture: true });
-
-  // Run repeatedly after load to catch layout shifts from fonts/images
-  checkReveals();
-  requestAnimationFrame(checkReveals);
-  setTimeout(checkReveals, 50);
-  setTimeout(checkReveals, 200);
-  setTimeout(checkReveals, 600);
-  setTimeout(checkReveals, 1500);
-  // Absolute last-resort: reveal EVERYTHING after 3s (in case iframe scroll events never fire)
-  setTimeout(() => {
-    document.querySelectorAll(revealSelector).forEach(el => el.classList.add('in'));
-    document.querySelectorAll('[data-count]').forEach(el => { if (el.dataset.counted !== '1') animateCount(el); });
-  }, 3000);
 
   // ============ SPLIT TEXT REVEAL ============
   document.querySelectorAll('[data-split="words"]').forEach(el => {
@@ -113,34 +50,21 @@ function rcgaInit() {
     if (el.dataset.counted === '1') return;
     el.dataset.counted = '1';
     const target = parseInt(el.dataset.count, 10);
-    // Use CSS ::before content via CSS variable (bypasses any DOM text manager)
-    el.classList.add('has-counter');
-    const dur = 2200;
+    if (reducedMotion.matches) {
+      el.textContent = target.toLocaleString();
+      return;
+    }
+    const dur = 1250;
     const start = performance.now();
     const step = (now) => {
       const t = Math.min(1, (now - start) / dur);
       const eased = 1 - Math.pow(1 - t, 4);
       const val = Math.floor(eased * target).toLocaleString();
-      el.style.setProperty('--counter-val', `"${val}"`);
-      if (t < 1) requestAnimationFrame(step);
+      el.textContent = val;
+      if (t < 1) scope.requestAnimationFrame(step);
     };
-    requestAnimationFrame(step);
+    scope.requestAnimationFrame(step);
   }
-  function checkCounters() {
-    const vh = window.innerHeight || document.documentElement.clientHeight || 800;
-    document.querySelectorAll('[data-count]').forEach(el => {
-      if (el.dataset.counted === '1') return;
-      const r = el.getBoundingClientRect();
-      if (r.top < vh * 1.1 && r.bottom > -200) {
-        animateCount(el);
-      }
-    });
-  }
-  window.addEventListener('scroll', checkCounters, { passive: true });
-  checkCounters();
-  setTimeout(checkCounters, 300);
-  setTimeout(checkCounters, 1000);
-
   // ============ LANGUAGE SWITCH & I18N TRANSLATION ENGINE ============
   function applyLanguage(lang) {
     if (!lang) return;
@@ -171,7 +95,7 @@ function rcgaInit() {
         }
         if (val) {
           if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val;
-          else if (val.includes('<') && val.includes('>')) el.innerHTML = val;
+          else if (val.includes('<') && val.includes('>')) setHTML(el, val);
           else el.textContent = val;
         }
       });
@@ -193,10 +117,14 @@ function rcgaInit() {
   }
 
   window.applyLanguage = applyLanguage;
+  scope.onCleanup(() => { delete window.applyLanguage; });
+  scope.listen(document, 'change', event => {
+    if (event.target.matches('#carec-lang-select')) applyLanguage(event.target.value);
+  });
 
   document.querySelectorAll('.lang-switch').forEach(group => {
     group.querySelectorAll('button').forEach(b => {
-      b.addEventListener('click', () => {
+      scope.listen(b, 'click', () => {
         applyLanguage(b.dataset.lang);
       });
     });
@@ -210,26 +138,12 @@ function rcgaInit() {
   // ============ FILTER CHIPS ============
   document.querySelectorAll('.filter-bar').forEach(bar => {
     bar.querySelectorAll('.filter-chip').forEach(chip => {
-      chip.addEventListener('click', () => {
+      scope.listen(chip, 'click', () => {
         bar.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
         chip.classList.add('active');
       });
     });
   });
-
-  // ============ HERO PARALLAX + KEN BURNS ============
-  const heroMedia = document.querySelector('.hero-media');
-  const heroInner = document.querySelector('.hero-inner');
-  if (heroMedia) {
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      if (y < window.innerHeight) {
-        heroMedia.style.transform = `translate3d(0, ${y * 0.4}px, 0)`;
-        if (heroInner) heroInner.style.transform = `translate3d(0, ${y * -0.15}px, 0)`;
-        heroMedia.style.opacity = String(Math.max(0, 1 - y / window.innerHeight * 0.6));
-      }
-    }, { passive: true });
-  }
 
   // ============ MARQUEE: clone children for seamless scroll ============
   document.querySelectorAll('.marquee-track').forEach(track => {
@@ -237,22 +151,23 @@ function rcgaInit() {
     children.forEach(c => track.appendChild(c.cloneNode(true)));
   });
 
+  const mouseEffects = window.matchMedia('(hover: hover) and (pointer: fine)');
   // ============ MAGNETIC BUTTONS ============
-  document.querySelectorAll('[data-magnetic]').forEach(el => {
-    el.addEventListener('mousemove', (e) => {
+  if (mouseEffects.matches) document.querySelectorAll('[data-magnetic]').forEach(el => {
+    scope.listen(el, 'mousemove', (e) => {
       const r = el.getBoundingClientRect();
       const x = e.clientX - r.left - r.width / 2;
       const y = e.clientY - r.top - r.height / 2;
       el.style.transform = `translate(${x * 0.18}px, ${y * 0.18}px)`;
     });
-    el.addEventListener('mouseleave', () => {
+    scope.listen(el, 'mouseleave', () => {
       el.style.transform = '';
     });
   });
 
   // ============ CARD MOUSE TILT ============
   document.querySelectorAll('[data-tilt]').forEach(el => {
-    el.addEventListener('mousemove', (e) => {
+    scope.listen(el, 'mousemove', (e) => {
       const r = el.getBoundingClientRect();
       const x = (e.clientX - r.left) / r.width - 0.5;
       const y = (e.clientY - r.top) / r.height - 0.5;
@@ -263,7 +178,7 @@ function rcgaInit() {
 
   // ============ GLOW HOVER — track cursor for radial gradient ============
   document.querySelectorAll('.glow-hover, .pub-card, .section-card, .feature-card, .country-chip').forEach(el => {
-    el.addEventListener('mousemove', (e) => {
+    scope.listen(el, 'mousemove', (e) => {
       const r = el.getBoundingClientRect();
       const x = ((e.clientX - r.left) / r.width) * 100;
       const y = ((e.clientY - r.top) / r.height) * 100;
@@ -276,26 +191,27 @@ function rcgaInit() {
   if (window.matchMedia('(hover: hover) and (pointer: fine)').matches && !document.querySelector('.rcga-cursor')) {
     const cursor = document.createElement('div');
     cursor.className = 'rcga-cursor';
-    cursor.innerHTML = '<span class="rcga-cursor-dot"></span><span class="rcga-cursor-ring"></span>';
+    setHTML(cursor, '<span class="rcga-cursor-dot"></span><span class="rcga-cursor-ring"></span>');
     document.body.appendChild(cursor);
+    scope.onCleanup(() => cursor.remove());
     let tx = 0, ty = 0, cx = 0, cy = 0;
-    window.addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; });
+    scope.listen(window, 'mousemove', (e) => { tx = e.clientX; ty = e.clientY; });
     const animate = () => {
       cx += (tx - cx) * 0.18;
       cy += (ty - cy) * 0.18;
       cursor.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
-      requestAnimationFrame(animate);
+      scope.requestAnimationFrame(animate);
     };
     animate();
     document.querySelectorAll('a, button, [data-cursor="hover"]').forEach(el => {
-      el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-      el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+      scope.listen(el, 'mouseenter', () => cursor.classList.add('hover'));
+      scope.listen(el, 'mouseleave', () => cursor.classList.remove('hover'));
     });
   }
 
   // ============ CURSOR SPOTLIGHT ============
   document.querySelectorAll('.spotlight').forEach(el => {
-    el.addEventListener('mousemove', (e) => {
+    scope.listen(el, 'mousemove', (e) => {
       const r = el.getBoundingClientRect();
       const x = ((e.clientX - r.left) / r.width) * 100;
       const y = ((e.clientY - r.top) / r.height) * 100;
@@ -305,19 +221,19 @@ function rcgaInit() {
   });
 
   // ============ 3D TILT CARDS ============
-  document.querySelectorAll('.tilt-card').forEach(el => {
+  if (mouseEffects.matches) document.querySelectorAll('.tilt-card').forEach(el => {
     let rafId = null;
     el.style.perspective = '1000px';
-    el.addEventListener('mousemove', (e) => {
+    scope.listen(el, 'mousemove', (e) => {
       if (rafId) cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(() => {
+      rafId = scope.requestAnimationFrame(() => {
         const r = el.getBoundingClientRect();
         const x = (e.clientX - r.left) / r.width - 0.5;
         const y = (e.clientY - r.top) / r.height - 0.5;
         el.style.transform = `perspective(1000px) rotateX(${-y * 8}deg) rotateY(${x * 10}deg)`;
       });
     });
-    el.addEventListener('mouseleave', () => {
+    scope.listen(el, 'mouseleave', () => {
       el.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
     });
   });
@@ -325,7 +241,7 @@ function rcgaInit() {
   // ============ KINETIC LETTER SPLITTER ============
   document.querySelectorAll('[data-kinetic]').forEach(el => {
     const text = el.textContent;
-    el.innerHTML = '';
+    setHTML(el, '');
     el.classList.add('kinetic');
     const inner = document.createElement('span');
     inner.className = 'kinetic-inner';
@@ -340,7 +256,7 @@ function rcgaInit() {
 
   // ============ DECORATIVE LINE DRAW ============
   document.querySelectorAll('.draw-line').forEach(line => {
-    const lio = new IntersectionObserver(entries => {
+    const lio = scope.observe(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) {
           e.target.classList.add('drawn');
@@ -351,21 +267,45 @@ function rcgaInit() {
     lio.observe(line);
   });
 
-  // ============ SCROLL PROGRESS BAR ============
-  const progress = document.querySelector('.scroll-progress');
-  if (progress) {
-    window.addEventListener('scroll', () => {
-      const scrolled = window.scrollY;
-      const max = document.body.scrollHeight - window.innerHeight;
-      const pct = max > 0 ? (scrolled / max) * 100 : 0;
-      progress.style.transform = `scaleX(${pct / 100})`;
-    }, { passive: true });
-  }
-}
+  // Read geometry once per frame and drop targets after their first reveal.
+  const pending = new Set(document.querySelectorAll(revealSelector + ', [data-count]'));
+  let queued = false;
+  function updateScroll() {
+    queued = false;
+    const y = window.scrollY;
+    const height = window.innerHeight;
+    const max = document.documentElement.scrollHeight - height;
+    const reduced = reducedMotion.matches;
+    const visible = [...pending].filter(el => {
+      if (reduced || el.contains(document.activeElement)) return true;
+      const rect = el.getBoundingClientRect();
+      return rect.top < height + 48 && rect.bottom > -48;
+    });
 
-// Run immediately if DOM is already parsed, else wait for it.
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', rcgaInit);
-} else {
-  rcgaInit();
+    nav?.classList.toggle('scrolled', y > 40);
+    if (progress) progress.style.transform = `scaleX(${max > 0 ? Math.min(1, Math.max(0, y / max)) : 0})`;
+    if (heroMedia && heroInner && mouseEffects.matches) {
+      const offset = Math.min(height, Math.max(0, y));
+      heroMedia.style.transform = reduced ? '' : `translate3d(0, ${offset * 0.18}px, 0)`;
+      heroInner.style.transform = reduced ? '' : `translate3d(0, ${offset * -0.06}px, 0)`;
+      heroMedia.style.opacity = reduced ? '' : String(1 - offset / height * 0.22);
+    }
+    visible.forEach(el => {
+      pending.delete(el);
+      if (el.matches(revealSelector)) el.classList.add('in');
+      if (el.hasAttribute('data-count')) animateCount(el);
+    });
+  }
+  function queueScroll() {
+    if (queued) return;
+    queued = true;
+    scope.requestAnimationFrame(updateScroll);
+  }
+  scope.listen(window, 'scroll', queueScroll, { passive: true });
+  scope.listen(window, 'resize', queueScroll, { passive: true });
+  scope.listen(document, 'focusin', queueScroll);
+  scope.listen(document, 'load', queueScroll, true);
+  scope.listen(reducedMotion, 'change', queueScroll);
+  if (document.fonts) document.fonts.ready.then(queueScroll);
+  updateScroll();
 }

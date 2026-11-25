@@ -1,0 +1,171 @@
+import { Page } from '../Page';
+import { Nav, Footer } from '../Layout';
+
+export default function RoutePage() {
+  return <Page page="events" title="Tadbirlar — RCGA" description="" bodyClass="" dark={false}>
+<div>
+  <div className="scroll-progress" />
+  <Nav active="events" dark={false} />
+<section className="page-hero">
+  <div className="container-wide">
+    <div className="crumbs">
+      <a href="index.html" data-uz="Bosh sahifa" data-en="Home" data-ru="Главная">Bosh sahifa</a>
+      <span className="sep">/</span>
+      <span data-uz="Tadbirlar" data-en="Events" data-ru="События">Tadbirlar</span>
+    </div>
+    <div className="eyebrow" data-uz="Konferensiya · Vebinar · Trening" data-en="Conferences · Webinars · Trainings" data-ru="Конференции · Вебинары · Тренинги">Konferensiya · Vebinar · Trening</div>
+    <h1>
+      <span data-uz="Hamjamiyat" data-en="Community" data-ru="События">Hamjamiyat</span>{' '}
+      <em data-uz="tadbirlari" data-en="events" data-ru="сообщества">tadbirlari</em>.
+    </h1>
+    <p className="lead" data-uz="CAREC mintaqasi bo'ylab konferensiyalar, vebinarlar, treninglar va akademik almashinuv tadbirlari." data-en="Conferences, webinars, training sessions, and academic exchange events across the CAREC region." data-ru="Конференции, вебинары, тренинги и мероприятия академического обмена по всему региону ЦАРИЭС.">CAREC mintaqasi bo'ylab konferensiyalar, vebinarlar, treninglar va akademik almashinuv tadbirlari.</p>
+  </div>
+</section>
+
+{/* FEATURED EVENT */}
+<section className="section feed-feature">
+  <div className="container-wide">
+    <div className="reveal rounded-panel" style={{"background":"var(--green-900)","color":"#fff","padding":"80px 64px","position":"relative","overflow":"hidden"}}>
+      <div style={{"position":"absolute","inset":"0","background":"linear-gradient(135deg, rgba(46,157,92,0.3), transparent 60%)"}}></div>
+      <div style={{"position":"relative","display":"grid","gridTemplateColumns":"1fr 1fr","gap":"80px","alignItems":"center"}}>
+        <div>
+          <div className="eyebrow" style={{"color":"var(--green-400)","marginBottom":"24px"}} data-uz="Asosiy tadbir · 2026" data-en="Featured Event · 2026" data-ru="Главное событие · 2026">Asosiy tadbir · 2026</div>
+          <h2 style={{"color":"#fff","marginBottom":"24px"}}>
+            <span data-uz="CAREC Yashil Agrar Forumi" data-en="CAREC Green Agrarian Forum" data-ru="Зеленый аграрный форум ЦАРИЭС">CAREC Yashil Agrar Forumi</span>
+            <em style={{"color":"var(--green-400)","fontStyle":"italic","fontWeight":"400"}}>2026</em>
+          </h2>
+          <p style={{"color":"rgba(255,255,255,0.75)","fontSize":"18px","lineHeight":"1.6","marginBottom":"32px"}} data-uz="11 davlat, 600+ ishtirokchi, 4 kunlik dasturda — mintaqaning eng katta agrar tadbiri." data-en="11 countries, 600+ participants, 4-day program — the region's premier agricultural event." data-ru="11 стран, 600+ участников, 4-дневная программа — крупнейшее аграрное событие региона.">11 davlat, 600+ ishtirokchi, 4 kunlik dasturda — mintaqaning eng katta agrar tadbiri.</p>
+          <div style={{"display":"flex","gap":"32px","marginBottom":"40px","flexWrap":"wrap"}}>
+            <div>
+              <div style={{"fontSize":"11px","letterSpacing":"0.14em","textTransform":"uppercase","color":"rgba(255,255,255,0.5)","marginBottom":"6px"}} data-uz="Sana" data-en="Date" data-ru="Дата">Sana</div>
+              <div style={{"fontFamily":"var(--serif)","fontSize":"22px"}} data-uz="12–15 Iyul, 2026" data-en="July 12–15, 2026" data-ru="12–15 июля, 2026">12–15 Iyul, 2026</div>
+            </div>
+            <div>
+              <div style={{"fontSize":"11px","letterSpacing":"0.14em","textTransform":"uppercase","color":"rgba(255,255,255,0.5)","marginBottom":"6px"}} data-uz="Joy" data-en="Location" data-ru="Место">Joy</div>
+              <div style={{"fontFamily":"var(--serif)","fontSize":"22px"}} data-uz="Toshkent, O'zbekiston" data-en="Tashkent, Uzbekistan" data-ru="Ташкент, Узбекистан">Toshkent, O'zbekiston</div>
+            </div>
+            <div>
+              <div style={{"fontSize":"11px","letterSpacing":"0.14em","textTransform":"uppercase","color":"rgba(255,255,255,0.5)","marginBottom":"6px"}} data-uz="Format" data-en="Format" data-ru="Формат">Format</div>
+              <div style={{"fontFamily":"var(--serif)","fontSize":"22px"}}>Hybrid</div>
+            </div>
+          </div>
+          <a href="#" className="btn btn-primary" style={{"background":"#fff","color":"var(--green-900)"}}>
+            <span data-uz="Ro'yxatdan o'tish" data-en="Register Now" data-ru="Зарегистрироваться">Ro'yxatdan o'tish</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div>
+          <img loading="lazy" decoding="async" className="editorial-photo" src="assets/conference-people-1000.webp" alt="" style={{"width":"100%","aspectRatio":"4/3","objectFit":"cover"}}/>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* TABS */}
+<section className="section-tight feed-filters">
+  <div className="container-wide">
+    <div className="filter-bar reveal">
+      <button className="filter-chip active" data-uz="Yaqinlashayotgan · 12" data-en="Upcoming · 12" data-ru="Предстоящие · 12">Yaqinlashayotgan · 12</button>
+      <button className="filter-chip" data-uz="Bu oy" data-en="This Month" data-ru="В этом месяце">Bu oy</button>
+      <button className="filter-chip" data-uz="Konferensiya" data-en="Conferences" data-ru="Конференции">Konferensiya</button>
+      <button className="filter-chip" data-uz="Vebinar" data-en="Webinars" data-ru="Вебинары">Vebinar</button>
+      <button className="filter-chip" data-uz="Trening" data-en="Trainings" data-ru="Тренинги">Trening</button>
+      <button className="filter-chip" data-uz="O'tgan tadbirlar" data-en="Past Events" data-ru="Прошедшие">O'tgan tadbirlar</button>
+    </div>
+  </div>
+</section>
+
+{/* TIMELINE */}
+<section style={{"paddingBottom":"120px"}}>
+  <div className="container-wide reveal">
+
+    <a href="#" className="event-row">
+      <div className="event-date"><span data-uz="12 Iyul" data-en="Jul 12" data-ru="12 июля">12 Iyul</span><span data-uz="2026 · Toshkent" data-en="2026 · Tashkent" data-ru="2026 · Ташкент">2026 · Toshkent</span></div>
+      <div>
+        <div className="event-title" data-uz="CAREC Yashil Agrar Forumi 2026" data-en="CAREC Green Agrarian Forum 2026" data-ru="Зеленый аграрный форум ЦАРИЭС 2026">CAREC Yashil Agrar Forumi 2026</div>
+        <p style={{"color":"var(--ink-600)","fontSize":"15px","marginTop":"8px","marginBottom":"12px"}} data-uz="11 davlat olimlari, fermerlari va siyosatchilari ishtirokidagi yillik mintaqaviy forum." data-en="Annual regional forum uniting researchers, farmers, and policymakers across 11 countries." data-ru="Ежегодный региональный форум с участием ученых, фермеров и политиков из 11 стран.">11 davlat olimlari, fermerlari va siyosatchilari ishtirokidagi yillik mintaqaviy forum.</p>
+        <div className="event-tags"><span className="tag" data-uz="Konferensiya" data-en="Conference" data-ru="Конференция">Konferensiya</span><span className="tag ink" data-uz="11 davlat" data-en="11 countries" data-ru="11 стран">11 davlat</span><span className="tag gold" data-uz="Asosiy" data-en="Featured" data-ru="Главное">Asosiy</span></div>
+      </div>
+      <div className="event-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M7 17L17 7M9 7h8v8"/></svg></div>
+    </a>
+
+    <a href="#" className="event-row">
+      <div className="event-date"><span data-uz="28 Iyul" data-en="Jul 28" data-ru="28 июля">28 Iyul</span><span data-uz="2026 · Onlayn" data-en="2026 · Online" data-ru="2026 · Онлайн">2026 · Onlayn</span></div>
+      <div>
+        <div className="event-title" data-uz="Tuproq sog'ligini baholash: zamonaviy laboratoriya usullari" data-en="Assessing soil health: contemporary laboratory methodologies" data-ru="Оценка здоровья почвы: современные лабораторные методы">Tuproq sog'ligini baholash: zamonaviy laboratoriya usullari</div>
+        <p style={{"color":"var(--ink-600)","fontSize":"15px","marginTop":"8px","marginBottom":"12px"}} data-uz="Tuproq mikrobiologiyasi bo'yicha amaliy treninglar va laboratoriya tajribalari." data-en="Hands-on training and laboratory experiments in soil microbiology." data-ru="Практические тренинги и лабораторные опыты по микробиологии почвы.">Tuproq mikrobiologiyasi bo'yicha amaliy treninglar va laboratoriya tajribalari.</p>
+        <div className="event-tags"><span className="tag" data-uz="Vebinar" data-en="Webinar" data-ru="Вебинар">Vebinar</span><span className="tag ink" data-uz="Olimlar uchun" data-en="For Scientists" data-ru="Для ученых">Olimlar uchun</span></div>
+      </div>
+      <div className="event-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M7 17L17 7M9 7h8v8"/></svg></div>
+    </a>
+
+    <a href="#" className="event-row">
+      <div className="event-date"><span data-uz="14 Avg" data-en="Aug 14" data-ru="14 авг">14 Avg</span><span data-uz="2026 · Bishkek" data-en="2026 · Bishkek" data-ru="2026 · Бишкек">2026 · Bishkek</span></div>
+      <div>
+        <div className="event-title" data-uz="Yosh tadqiqotchilar maktabi — iqlim moslashuvi" data-en="Young Researchers School — Climate Adaptation" data-ru="Школа молодых ученых — климатическая адаптация">Yosh tadqiqotchilar maktabi — iqlim moslashuvi</div>
+        <p style={{"color":"var(--ink-600)","fontSize":"15px","marginTop":"8px","marginBottom":"12px"}} data-uz="PhD talabalar uchun 5 kunlik intensiv ilmiy maktab." data-en="5-day intensive summer scientific school for PhD candidates." data-ru="5-дневная интенсивная научная школа для докторантов PhD.">PhD talabalar uchun 5 kunlik intensiv ilmiy maktab.</p>
+        <div className="event-tags"><span className="tag" data-uz="Trening" data-en="Training" data-ru="Тренинг">Trening</span><span className="tag ink" data-uz="PhD talabalar" data-en="PhD Students" data-ru="Студенты PhD">PhD talabalar</span><span className="tag ink" data-uz="64 joy" data-en="64 seats" data-ru="64 места">64 joy</span></div>
+      </div>
+      <div className="event-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M7 17L17 7M9 7h8v8"/></svg></div>
+    </a>
+
+    <a href="#" className="event-row">
+      <div className="event-date"><span data-uz="02 Sen" data-en="Sep 02" data-ru="02 сент">02 Sen</span><span data-uz="2026 · Olmaota" data-en="2026 · Almaty" data-ru="2026 · Алматы">2026 · Olmaota</span></div>
+      <div>
+        <div className="event-title" data-uz="Markaziy Osiyo bug'doy seleksiyasi simpoziumi" data-en="Central Asia Wheat Breeding Symposium" data-ru="Симпозиум по селекции пшеницы Центральной Азии">Markaziy Osiyo bug'doy seleksiyasi simpoziumi</div>
+        <p style={{"color":"var(--ink-600)","fontSize":"15px","marginTop":"8px","marginBottom":"12px"}} data-uz="CIMMYT, ICARDA va RCGA hamkorligida bug'doy navlari bo'yicha mintaqaviy simpozium." data-en="Regional symposium on wheat cultivars organized jointly by CIMMYT, ICARDA, and RCGA." data-ru="Региональный симпозиум по сортам пшеницы совместно с CIMMYT, ICARDA и RCGA.">CIMMYT, ICARDA va RCGA hamkorligida bug'doy navlari bo'yicha mintaqaviy simpozium.</p>
+        <div className="event-tags"><span className="tag" data-uz="Simpozium" data-en="Symposium" data-ru="Симпозиум">Simpozium</span><span className="tag ink" data-uz="Seleksiya" data-en="Breeding" data-ru="Селекция">Seleksiya</span></div>
+      </div>
+      <div className="event-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M7 17L17 7M9 7h8v8"/></svg></div>
+    </a>
+
+    <a href="#" className="event-row">
+      <div className="event-date"><span data-uz="19 Sen" data-en="Sep 19" data-ru="19 сент">19 Sen</span><span data-uz="2026 · Onlayn" data-en="2026 · Online" data-ru="2026 · Онлайн">2026 · Onlayn</span></div>
+      <div>
+        <div className="event-title" data-uz="Sun'iy intellekt va qishloq xo'jaligi: amaliy keyslar" data-en="Artificial Intelligence & Agriculture: Applied Cases" data-ru="Искусственный интеллект и сельское хозяйство: практические кейсы">Sun'iy intellekt va qishloq xo'jaligi: amaliy keyslar</div>
+        <p style={{"color":"var(--ink-600)","fontSize":"15px","marginTop":"8px","marginBottom":"12px"}} data-uz="Mintaqa universitetlari professorlari uchun zamonaviy AI yondashuvlari masterklassi." data-en="Masterclass on contemporary AI approaches for regional university faculty." data-ru="Мастер-класс по современным методам ИИ для преподавателей вузов региона.">Mintaqa universitetlari professorlari uchun zamonaviy AI yondashuvlari masterklassi.</p>
+        <div className="event-tags"><span className="tag" data-uz="Vebinar" data-en="Webinar" data-ru="Вебинар">Vebinar</span><span className="tag ink">AI/ML</span></div>
+      </div>
+      <div className="event-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M7 17L17 7M9 7h8v8"/></svg></div>
+    </a>
+
+    <a href="#" className="event-row">
+      <div className="event-date"><span data-uz="07 Okt" data-en="Oct 07" data-ru="07 окт">07 Okt</span><span data-uz="2026 · Dushanbe" data-en="2026 · Dushanbe" data-ru="2026 · Душанбе">2026 · Dushanbe</span></div>
+      <div>
+        <div className="event-title" data-uz="Tojikiston tog' qishloq xo'jaligi xalqaro konferensiyasi" data-en="Tajikistan Mountain Agriculture International Conference" data-ru="Международная конференция по горному сельскому хозяйству Таджикистана">Tojikiston tog' qishloq xo'jaligi xalqaro konferensiyasi</div>
+        <p style={{"color":"var(--ink-600)","fontSize":"15px","marginTop":"8px","marginBottom":"12px"}} data-uz="Tog'li hududlardagi agrar tizimlar va biologik xilma-xillik." data-en="Agrarian dynamics and biodiversity conservation in mountainous regions." data-ru="Аграрные системы и биоразнообразие в горных регионах.">Tog'li hududlardagi agrar tizimlar va biologik xilma-xillik.</p>
+        <div className="event-tags"><span className="tag" data-uz="Konferensiya" data-en="Conference" data-ru="Конференция">Konferensiya</span><span className="tag ink" data-uz="Tog' agrari" data-en="Mountain Farming" data-ru="Горное агро">Tog' agrari</span></div>
+      </div>
+      <div className="event-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M7 17L17 7M9 7h8v8"/></svg></div>
+    </a>
+
+    <a href="#" className="event-row">
+      <div className="event-date"><span data-uz="22 Okt" data-en="Oct 22" data-ru="22 окт">22 Okt</span><span data-uz="2026 · Toshkent" data-en="2026 · Tashkent" data-ru="2026 · Ташкент">2026 · Toshkent</span></div>
+      <div>
+        <div className="event-title" data-uz="RCGA Innovation Day — startuplar va investorlar uchun" data-en="RCGA Innovation Day — Startups & Investors" data-ru="RCGA Innovation Day — стартапы и инвесторы">RCGA Innovation Day — startuplar va investorlar uchun</div>
+        <p style={{"color":"var(--ink-600)","fontSize":"15px","marginTop":"8px","marginBottom":"12px"}} data-uz="Agro-tech startuplari va xalqaro investorlar uchun networking tadbir." data-en="Networking event connecting agri-tech ventures with international investors." data-ru="Нетворкинг для агротехнологических стартапов и международных инвесторов.">Agro-tech startuplari va xalqaro investorlar uchun networking tadbir.</p>
+        <div className="event-tags"><span className="tag">Pitch</span><span className="tag ink">Agro-tech</span><span className="tag gold" data-uz="Investitsiya" data-en="Investment" data-ru="Инвестиции">Investitsiya</span></div>
+      </div>
+      <div className="event-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M7 17L17 7M9 7h8v8"/></svg></div>
+    </a>
+
+    <a href="#" className="event-row">
+      <div className="event-date"><span data-uz="15 Noy" data-en="Nov 15" data-ru="15 нояб">15 Noy</span><span data-uz="2026 · Ostona" data-en="2026 · Astana" data-ru="2026 · Астана">15 Noy</span></div>
+      <div>
+        <div className="event-title" data-uz="Mintaqaviy siyosatchilar dialogi: oziq-ovqat xavfsizligi" data-en="Regional Policy Dialogue: Food Security" data-ru="Региональный диалог политиков: продовольственная безопасность">Mintaqaviy siyosatchilar dialogi: oziq-ovqat xavfsizligi</div>
+        <p style={{"color":"var(--ink-600)","fontSize":"15px","marginTop":"8px","marginBottom":"12px"}} data-uz="CAREC davlatlari qishloq xo'jaligi vazirlari va siyosatchilari ishtirokidagi yopiq dialog." data-en="High-level policy dialogue among agriculture ministers and delegates from CAREC states." data-ru="Диалог высокого уровня с участием министров сельского хозяйства стран ЦАРИЭС.">CAREC davlatlari qishloq xo'jaligi vazirlari va siyosatchilari ishtirokidagi yopiq dialog.</p>
+        <div className="event-tags"><span className="tag">Dialog</span><span className="tag ink" data-uz="Hukumat" data-en="Government" data-ru="Правительство">Hukumat</span></div>
+      </div>
+      <div className="event-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M7 17L17 7M9 7h8v8"/></svg></div>
+    </a>
+
+    <div style={{"marginTop":"64px","textAlign":"center"}}>
+      <button className="btn btn-outline" data-uz="Yana 4 ta yaqinlashayotgan tadbir" data-en="4 more upcoming events" data-ru="Еще 4 предстоящих события">Yana 4 ta yaqinlashayotgan tadbir</button>
+    </div>
+  </div>
+</section>
+  <Footer />
+</div>
+  </Page>;
+}

@@ -1,0 +1,654 @@
+import { countries } from '../LanguageMenu';
+import { Page } from '../Page';
+import { Nav, Footer } from '../Layout';
+import { initPage } from '../behaviors/index.js';
+
+export default function RoutePage() {
+  return <Page page="home" title="RCGA — Regional Center for Green Agriculture" description="CAREC mintaqasi bo'ylab yashil qishloq xo'jaligi, iqlimga moslashgan dehqonchilik va raqamli agrosanoat sohasidagi bilim va innovatsiyalar markazi." bodyClass="" dark={true} initialize={initPage}>
+<div>
+  <div className="scroll-progress" />
+  <Nav active="home" dark={true} />
+  {/* HERO */}
+  <header className="hero">
+    <div className="hero-media">
+      <img src="assets/hero-wheat-field-1600.webp" srcSet="assets/hero-wheat-field-800.webp 800w, assets/hero-wheat-field-1600.webp 1600w" sizes="100vw" fetchPriority="high" alt="" />
+    </div>
+    {/* Big serial number */}
+    <div className="hero-serial">01</div>
+    {/* SVG Map overlay */}
+    <svg className="hero-map" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <g opacity="0.5">
+        <path d="M 100 300 Q 140 240 220 235 L 320 220 Q 400 200 460 220 L 550 230 Q 620 245 680 280 L 720 320 Q 730 380 700 420 L 640 460 Q 580 480 500 475 L 400 470 Q 320 465 260 450 L 180 420 Q 120 380 100 340 Z" strokeDasharray="4 6" />
+        <path d="M 200 280 Q 280 290 340 310 T 480 330 T 620 340" opacity="0.6" />
+        <path d="M 240 360 Q 320 350 400 360 T 560 380" opacity="0.4" />
+      </g>
+      <g fontFamily="JetBrains Mono, monospace" fontSize={11} fill="currentColor">
+        {countries.map(([code], i) => {
+          const [x,y] = [[360,335],[425,220],[455,310],[408,395],[292,406],[187,350],[153,275],[625,175],[588,356],[350,128],[60,180]][i];
+          return <g key={code} className="country-dot"><circle cx={x} cy={y} r={4}/><text x={x+10} y={y+4}>{code}</text></g>;
+        })}
+      </g>
+    </svg>
+    <div className="hero-inner container-wide">
+      <div className="hero-meta-row reveal-fade">
+        <span><span className="dot" />Regional Center for Green Agriculture</span>
+        <span>Toshkent · 41.3° N, 69.2° E</span>
+      </div>
+      <h1 className="reveal" style={{maxWidth: 1400}} data-split="words" data-uz="Yashil qishloq xo'jaligi uchun mintaqaning ilmiy ovozi." data-en="The region's scientific voice for green agriculture." data-ru="Научный голос региона в области зеленого сельского хозяйства.">
+        Yashil qishloq xo'jaligi uchun mintaqaning ilmiy ovozi.
+      </h1>
+      <p className="hero-lead reveal" style={{marginTop: 40, marginBottom: 40}} data-uz="RCGA — iqlimga moslashgan dehqonchilik, raqamli agrosanoat va Markaziy Osiyo bo'ylab ilmiy hamkorlikning yagona platformasi. O‘n bir davlat, bir tarmoq, ochiq bilim." data-en="RCGA is a unified platform for climate-adaptive farming, digital agro-industry, and scientific collaboration across Central Asia. Eleven countries, one network, open knowledge." data-ru="RCGA — единая платформа для климатически адаптированного земледелия, цифровой агропромышленности и научного сотрудничества в Центральной Азии. Одиннадцать стран, одна сеть, открытые знания.">
+        RCGA — iqlimga moslashgan dehqonchilik, raqamli agrosanoat va Markaziy Osiyo bo'ylab ilmiy hamkorlikning yagona
+        platformasi. O‘n bir davlat, bir tarmoq, ochiq bilim.
+      </p>
+      <div className="hero-actions reveal">
+        <a href="publications.html" className="btn btn-primary" data-magnetic>
+          <span data-uz="Ilmiy bazani o'rganish" data-en="Explore knowledge base" data-ru="Изучить базу знаний">Ilmiy
+            bazani o'rganish</span>
+          <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+            <path d="M5 12h14M13 5l7 7-7 7" />
+          </svg>
+        </a>
+        <a href="events.html" className="btn btn-ghost-light" data-uz="Yaqinlashayotgan tadbirlar" data-en="Upcoming events" data-ru="Предстоящие события">Yaqinlashayotgan tadbirlar</a>
+      </div>
+    </div>
+    <div className="scroll-cue">
+      <span data-uz="Pastga" data-en="Scroll down" data-ru="Вниз">Pastga</span>
+      <span className="scroll-cue-line" />
+    </div>
+  </header>
+  {/* MARQUEE */}
+  <section style={{padding: '40px 0', background: 'var(--ink-950)', borderBottom: '1px solid rgba(255,255,255,0.05)'}}>
+    <div className="marquee dark">
+      <div className="marquee-track">
+        <span className="marquee-item"><span data-uz="Iqlim moslashuvi" data-en="Climate adaptation" data-ru="Климатическая адаптация">Iqlim moslashuvi</span> <span className="star">✦</span></span>
+        <span className="marquee-item"><span data-uz="Suv resurslari" data-en="Water resources" data-ru="Водные ресурсы">Suv
+            resurslari</span> <span className="star">✦</span></span>
+        <span className="marquee-item"><span data-uz="Tuproq sog'ligi" data-en="Soil health" data-ru="Здоровье почвы">Tuproq
+            sog'ligi</span> <span className="star">✦</span></span>
+        <span className="marquee-item"><span data-uz="Seleksiya" data-en="Breeding" data-ru="Селекция">Seleksiya</span>
+          <span className="star">✦</span></span>
+        <span className="marquee-item"><span data-uz="AI & raqamli agrosanoat" data-en="AI & digital agro-industry" data-ru="ИИ и цифровая агропромышленность">AI &amp; raqamli agrosanoat</span> <span className="star">✦</span></span>
+        <span className="marquee-item"><span data-uz="CAREC sherikligi" data-en="CAREC partnership" data-ru="Партнерство ЦАРИЭС">CAREC sherikligi</span> <span className="star">✦</span></span>
+        <span className="marquee-item"><span data-uz="Ochiq ma'lumotlar" data-en="Open data" data-ru="Открытые данные">Ochiq
+            ma'lumotlar</span> <span className="star">✦</span></span>
+      </div>
+    </div>
+  </section>
+  {/* STATS */}
+  <section className="bg-dark">
+    <div className="container-wide">
+      <div style={{padding: 'clamp(48px, 6vw, 90px) 0 32px'}} className="reveal">
+        <div className="section-label" style={{color: 'rgba(255,255,255,0.5)'}}>
+          <span className="num">i.</span>
+          <span data-uz="Raqamlarda RCGA" data-en="RCGA in Numbers" data-ru="RCGA в цифрах">Raqamlarda RCGA</span>
+        </div>
+        <div style={{display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: 80, alignItems: 'end'}}>
+          <h2 style={{maxWidth: 1000}}>
+            <span data-uz="Bir platforma." data-en="One platform." data-ru="Одна платформа.">Bir platforma.</span><br />
+            <em data-uz="O‘n bir davlat." data-en="Eleven countries." data-ru="Одиннадцать стран.">O‘n bir davlat.</em><br />
+            <span data-uz="Cheksiz imkoniyatlar." data-en="Endless possibilities." data-ru="Безграничные возможности.">Cheksiz imkoniyatlar.</span>
+          </h2>
+          <p className="lead" data-uz="2018 yildan beri mintaqaning eng katta agrar tadqiqot tarmog'ini birlashtirib kelmoqdamiz." data-en="Since 2018, we have been uniting the largest agricultural research network in the region." data-ru="С 2018 года мы объединяем крупнейшую сеть аграрных исследований в регионе.">2018 yildan beri
+            mintaqaning eng katta agrar tadqiqot tarmog'ini birlashtirib kelmoqdamiz.</p>
+        </div>
+      </div>
+      <div className="stats dark reveal-stagger">
+        <div className="stat">
+          <div className="stat-label-top" data-uz="Mintaqa" data-en="Region" data-ru="Регион">Mintaqa</div>
+          <div className="stat-num"><span data-count={11}>0</span></div>
+          <div className="stat-desc" data-uz="CAREC davlatlari sherik tarmog'ida." data-en="CAREC countries in the partner network." data-ru="Страны ЦАРИЭС в партнерской сети.">CAREC
+            davlatlari sherik tarmog'ida.</div>
+        </div>
+        <div className="stat">
+          <div className="stat-label-top" data-uz="Bilim bazasi" data-en="Knowledge Base" data-ru="База знаний">Bilim bazasi
+          </div>
+          <div className="stat-num"><span data-count={1240}>0</span><span className="plus">+</span></div>
+          <div className="stat-desc" data-uz="Ilmiy nashrlar va siyosat hujjatlari, ochiq foydalanish uchun." data-en="Scientific publications and policy documents for open access." data-ru="Научные публикации и политические документы в открытом доступе.">Ilmiy nashrlar va siyosat
+            hujjatlari, ochiq foydalanish uchun.</div>
+        </div>
+        <div className="stat">
+          <div className="stat-label-top" data-uz="Institutsional" data-en="Institutional" data-ru="Институциональный">
+            Institutsional</div>
+          <div className="stat-num"><span data-count={86}>0</span><span className="plus">+</span></div>
+          <div className="stat-desc" data-uz="Universitetlar va tadqiqot markazlari hamkorligi." data-en="Collaboration of universities and research centers." data-ru="Сотрудничество университетов и исследовательских центров.">Universitetlar va tadqiqot markazlari
+            hamkorligi.</div>
+        </div>
+        <div className="stat">
+          <div className="stat-label-top" data-uz="Hamjamiyat" data-en="Community" data-ru="Сообщество">Hamjamiyat</div>
+          <div className="stat-num"><span data-count={5400}>0</span><span className="plus">+</span></div>
+          <div className="stat-desc" data-uz="Olimlar, fermerlar va siyosatchilar — uch tilda." data-en="Scientists, farmers, and policymakers — in three languages." data-ru="Ученые, фермеры и политики — на трех языках.">Olimlar, fermerlar va siyosatchilar — uch tilda.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {/* WHY RCGA */}
+  <section className="section">
+    <div className="container-wide">
+      <div className="section-head reveal">
+        <div>
+          <div className="section-label">
+            <span className="num">ii.</span>
+            <span data-uz="Nima uchun RCGA?" data-en="Why RCGA?" data-ru="Почему RCGA?">Nima uchun RCGA?</span>
+          </div>
+          <h2>
+            <span data-uz="Mintaqaning nodir" data-en="The region's unique" data-ru="Уникальный">Mintaqaning
+              nodir</span>
+            <em data-uz="bilim markazi" data-en="knowledge hub" data-ru="центр знаний">bilim markazi</em>
+            <span data-uz="— fermerdan tortib siyosatchigacha." data-en="— from farmer to policymaker." data-ru="— от фермера до политика.">— fermerdan tortib siyosatchigacha.</span>
+          </h2>
+        </div>
+        <p className="lead" data-uz="RCGA Markaziy Osiyo va Janubiy Kavkazning yetakchi agrar tadqiqot institutlari, universitetlari va xalqaro tashkilotlarini birlashtiradi." data-en="RCGA unites leading agricultural research institutes, universities, and international organizations of Central Asia and the South Caucasus." data-ru="RCGA объединяет ведущие аграрные научно-исследовательские институты, университеты и международные организации Центральной Азии и Южного Кавказа.">
+          RCGA Markaziy Osiyo va Janubiy Kavkazning yetakchi agrar tadqiqot institutlari, universitetlari va xalqaro
+          tashkilotlarini birlashtiradi.</p>
+      </div>
+      <div className="numbered-list reveal-stagger">
+        {/* 1-punkt */}
+        <div className="numbered-item">
+          <div className="numbered-item-num">i.</div>
+          <div>
+            <h4 data-uz="Iqlimga moslashgan dehqonchilik" data-en="Climate-adaptive farming" data-ru="Климатически адаптированное земледелие">Iqlimga moslashgan dehqonchilik</h4>
+            <p data-uz="Suv tanqisligi, tuproq degradatsiyasi va iqlim o'zgarishi sharoitida hosil barqarorligini ta'minlovchi yondashuvlar bo'yicha tadqiqotlar va amaliy yo'riqnomalar." data-en="Research and practical guidelines on approaches ensuring yield stability under conditions of water scarcity, soil degradation, and climate change." data-ru="Исследования и практические руководства по подходам, обеспечивающим стабильность урожая в условиях нехватке воды, деградации почв и изменения климата.">
+              Suv tanqisligi, tuproq degradatsiyasi va iqlim o'zgarishi sharoitida hosil barqarorligini ta'minlovchi
+              yondashuvlar bo'yicha tadqiqotlar va amaliy yo'riqnomalar.</p>
+          </div>
+        </div>
+        {/* 2-punkt */}
+        <div className="numbered-item">
+          <div className="numbered-item-num">ii.</div>
+          <div>
+            <h4 data-uz="Raqamli agrosanoat" data-en="Digital agro-industry" data-ru="Цифровая агропромышленность">
+              Raqamli agrosanoat</h4>
+            <p data-uz="Sun'iy yo'ldosh monitoringi, dron analitikasi, IoT sensorlari va sun'iy intellekt asosida zamonaviy fermerlik vositalari." data-en="Modern farming tools based on satellite monitoring, drone analytics, IoT sensors, and artificial intelligence." data-ru="Современные инструменты фермерства на основе спутникового мониторинга, аналитики дронов, датчиков IoT и искусственного интеллекта.">
+              Sun'iy yo'ldosh monitoringi, dron analitikasi, IoT sensorlari va sun'iy intellekt asosida zamonaviy
+              fermerlik vositalari.</p>
+          </div>
+        </div>
+        {/* 3-punkt */}
+        <div className="numbered-item">
+          <div className="numbered-item-num">iii.</div>
+          <div>
+            <h4 data-uz="Mintaqaviy hamkorlik" data-en="Regional cooperation" data-ru="Региональное сотрудничество">
+              Mintaqaviy hamkorlik</h4>
+            <p data-uz="8 ta CAREC davlati o'rtasida tadqiqot natijalari, talabalar almashinuvi va siyosiy muloqotni rivojlantiruvchi tarmoq." data-en="A network fostering research results, student exchange, and policy dialogue among 8 CAREC countries." data-ru="Сеть, способствующая обмену результатами исследований, студентами и политическому диалогу между 11 странами ЦАРИЭС.">
+              8 ta CAREC davlati o'rtasida tadqiqot natijalari, talabalar almashinuvi va siyosiy muloqotni
+              rivojlantiruvchi tarmoq.</p>
+          </div>
+        </div>
+        {/* 4-punkt */}
+        <div className="numbered-item">
+          <div className="numbered-item-num">iv.</div>
+          <div>
+            <h4 data-uz="Bilim ochiq, manba erkin" data-en="Open knowledge, free source" data-ru="Открытые знания, свободный источник">Bilim ochiq, manba erkin</h4>
+            <p data-uz="Open Access nashrlar, ochiq ma'lumotlar bazasi va uchta tilda — o'zbek, rus, ingliz tillarida yetkaziladigan tahlillar." data-en="Open Access publications, open database, and analytics delivered in three languages — Uzbek, Russian, and English." data-ru="Публикации Open Access, открытая база данных и аналитика, предоставляемая на трех языках — узбекском, русском и английском.">
+              Open Access nashrlar, ochiq ma'lumotlar bazasi va uchta tilda — o'zbek, rus, ingliz tillarida
+              yetkaziladigan tahlillar.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {/* BIG TYPE QUOTE */}
+  <section style={{padding: 'clamp(48px, 6vw, 90px) 0', background: 'var(--cream)', borderTop: '1px solid var(--ink-200)', borderBottom: '1px solid var(--ink-200)'}}>
+    <div className="container-wide">
+      <div className="reveal" style={{display: 'grid', gridTemplateColumns: 'auto 1fr', gap: 48, alignItems: 'start'}}>
+        <div className="quote-mark">"</div>
+        <div>
+          <p style={{fontFamily: 'var(--serif-display)', fontSize: 'clamp(40px, 5.5vw, 92px)', lineHeight: '1.02', letterSpacing: '-0.035em', color: 'var(--ink-900)', maxWidth: 1300, fontWeight: 300}}>
+            <span data-uz="Iqlim o'zgarishi" data-en="Climate change" data-ru="Изменение климата">Iqlim
+              o'zgarishi</span>
+            <em style={{color: 'var(--green-700)'}} data-uz="chegara bilmaydi." data-en="knows no borders." data-ru="не знает границ.">chegara bilmaydi.</em>
+            <span data-uz="Demak, biz uning ta'siriga qarshi javobimiz ham mintaqaviy darajada bo'lishi kerak." data-en="Therefore, our response to its impact must also be at a regional level." data-ru="Значит, и наш ответ на его воздействие должен быть на региональном уровне.">Demak, biz uning
+              ta'siriga
+              qarshi javobimiz ham mintaqaviy darajada bo'lishi kerak.</span>
+          </p>
+          <div style={{marginTop: 56, display: 'flex', alignItems: 'center', gap: 22, flexWrap: 'wrap'}}>
+            <img loading="lazy" decoding="async" src="assets/shuxrat-shokirov.jpg" alt="Shokirov Shuxrat Sobirovich" style={{width: 72, height: 72, borderRadius: '50%', objectFit: 'cover', objectPosition: 'top', border: '2px solid var(--green-700)', boxShadow: '0 4px 14px rgba(0,0,0,0.1)'}} />
+            <div>
+              <div style={{fontFamily: 'var(--serif-display)', fontSize: 26, fontStyle: 'italic', letterSpacing: '-0.02em', color: 'var(--ink-900)'}} data-uz="Shokirov Shuxrat Sobirovich" data-en="Shokirov Shukhrat Sobirovich" data-ru="Шокиров Шухрат Собирович">
+                Shokirov Shuxrat Sobirovich</div>
+              <div style={{fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--green-700)', fontWeight: 600, marginTop: 4}} data-uz="Ilmiy ishlar va innovatsiyalar bo'yicha prorektor — Texnika fanlari doktori" data-en="Vice-Rector for Research and Innovation — Doctor of Technical Sciences" data-ru="Проректор по научной работе и инновациям — Доктор технических наук">
+                Ilmiy ishlar va innovatsiyalar bo'yicha prorektor — Texnika fanlari doktori</div>
+              <div style={{fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-500)', marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center'}}>
+                <span>+998 71-237-22-67</span>
+                <span>•</span>
+                <a href="mailto:shokirov@tiiame.uz" style={{color: 'var(--ink-700)', textDecoration: 'underline', textUnderlineOffset: 2}}>shokirov@tiiame.uz</a>
+                <span>•</span>
+                <span data-uz="Qabul: Chor, Pay 14:00-16:00" data-en="Hours: Wed, Thu 14:00-16:00" data-ru="Прием: Ср, Чт 14:00-16:00">Qabul: Chor, Pay 14:00-16:00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {/* INDEX BLOCK: Table of contents */}
+  <section className="section">
+    <div className="container-wide">
+      <div className="section-head reveal">
+        <div>
+          <div className="section-label">
+            <span className="num">iii.</span>
+            <span data-uz="Platforma bo'limlari" data-en="Platform sections" data-ru="Разделы платформы">Platforma
+              bo'limlari</span>
+          </div>
+          <h2><span data-uz="Barcha resurslar" data-en="All resources" data-ru="Все ресурсы">Barcha resurslar</span> <em data-uz="bir joyda." data-en="in one place." data-ru="в одном месте.">bir joyda.</em></h2>
+        </div>
+        <p className="lead" data-uz="RCGA platformasining har bir bo'limi — bilim va hamkorlikka ochiq eshik." data-en="Every section of the RCGA platform is an open door to knowledge and collaboration." data-ru="Каждый раздел платформы RCGA — это открытая дверь к знаниям и сотрудничеству.">RCGA platformasining
+          har bir bo'limi — bilim va hamkorlikka ochiq eshik.</p>
+      </div>
+      <div className="reveal index-list">
+        <a href="publications.html" className="index-item">
+          <span className="index-item-num">01</span>
+          <span>
+            <span className="index-item-name" data-uz="Ilmiy nashrlar" data-en="Scientific publications" data-ru="Научные публикации">Ilmiy nashrlar</span>
+            <span className="index-item-desc" data-uz="Tadqiqot ishlari, texnik yo'riqnomalar va siyosat tahlillari" data-en="Research papers, technical guidelines and policy briefs" data-ru="Исследовательские работы, технические руководства и анализ политики">Tadqiqot ishlari, texnik
+              yo'riqnomalar va siyosat tahlillari</span>
+          </span>
+          <span className="index-item-count" data-uz="1 240+ resurs →" data-en="1,240+ resources →" data-ru="1 240+ ресурсов →">1 240+ resurs →</span>
+        </a>
+        <a href="events.html" className="index-item">
+          <span className="index-item-num">02</span>
+          <span>
+            <span className="index-item-name" data-uz="Konferensiyalar & Tadbirlar" data-en="Conferences & Events" data-ru="Конференции и события">Konferensiyalar &amp; Tadbirlar</span>
+            <span className="index-item-desc" data-uz="Vebinarlar, treninglar va akademik almashinuv dasturlari" data-en="Webinars, workshops and academic exchange programs" data-ru="Вебинары, тренинги и программы академического обмена">Vebinarlar, treninglar va akademik
+              almashinuv dasturlari</span>
+          </span>
+          <span className="index-item-count" data-uz="12 yaqinlashayotgan →" data-en="12 upcoming →" data-ru="12 предстоящих →">12 yaqinlashayotgan →</span>
+        </a>
+        <a href="news.html" className="index-item">
+          <span className="index-item-num">03</span>
+          <span>
+            <span className="index-item-name" data-uz="Yangiliklar & Press" data-en="News & Press" data-ru="Новости и пресса">Yangiliklar &amp; Press</span>
+            <span className="index-item-desc" data-uz="Mintaqadagi so'nggi voqealar va matbuot bayonotlari" data-en="Latest regional developments and press releases" data-ru="Последние события в регионе и пресс-релизы">Mintaqadagi so'nggi voqealar va matbuot
+              bayonotlari</span>
+          </span>
+          <span className="index-item-count" data-uz="Haftalik →" data-en="Weekly →" data-ru="Еженедельно →">Haftalik
+            →</span>
+        </a>
+        <a href="institutions.html" className="index-item">
+          <span className="index-item-num">04</span>
+          <span>
+            <span className="index-item-name" data-uz="Hamkor muassasalar" data-en="Partner institutions" data-ru="Партнерские учреждения">Hamkor muassasalar</span>
+            <span className="index-item-desc" data-uz="CAREC davlatlarining yetakchi ilmiy tadqiqot markazlari" data-en="Leading research centers across CAREC countries" data-ru="Ведущие научно-исследовательские центры стран ЦАРИЭС">CAREC davlatlarining yetakchi ilmiy
+              tadqiqot markazlari</span>
+          </span>
+          <span className="index-item-count" data-uz="86 muassasa →" data-en="86 institutions →" data-ru="86 учреждений →">86 muassasa →</span>
+        </a>
+        <a href="search.html" className="index-item">
+          <span className="index-item-num">05</span>
+          <span>
+            <span className="index-item-name" data-uz="Global qidiruv" data-en="Global search" data-ru="Глобальный поиск">Global qidiruv</span>
+            <span className="index-item-desc" data-uz="Barcha bilim bazasi bo'yicha aqlli qidiruv tizimi" data-en="Smart search engine across the entire knowledge base" data-ru="Интеллектуальная поисковая система по всей базе знаний">Barcha bilim bazasi bo'yicha aqlli
+              qidiruv tizimi</span>
+          </span>
+          <span className="index-item-count" data-uz="Instant →" data-en="Instant →" data-ru="Мгновенно →">Instant →</span>
+        </a>
+        <a href="about.html" className="index-item">
+          <span className="index-item-num">06</span>
+          <span>
+            <span className="index-item-name" data-uz="RCGA haqida" data-en="About RCGA" data-ru="О RCGA">RCGA haqida</span>
+            <span className="index-item-desc" data-uz="Missiya, jamoa va boshqaruv tuzilmasi haqida" data-en="About our mission, team and governance structure" data-ru="О миссии, команде и структуре управления">Missiya, jamoa va boshqaruv tuzilmasi haqida</span>
+          </span>
+          <span className="index-item-count" data-uz="Batafsil →" data-en="Learn more →" data-ru="Подробнее →">Batafsil
+            →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  {/* LATEST PUBLICATIONS */}
+  <section className="section bg-cream">
+    <div className="container-wide">
+      <div className="section-head reveal">
+        <div>
+          <div className="section-label">
+            <span className="num">iv.</span>
+            <span data-uz="So'nggi nashrlar" data-en="Latest publications" data-ru="Последние публикации">So'nggi
+              nashrlar</span>
+          </div>
+          <h2><span data-uz="Mintaqaning yetakchi" data-en="Leading regional" data-ru="Ведущие региональные">Mintaqaning
+              yetakchi</span> <em data-uz="tadqiqotlari." data-en="research." data-ru="исследования.">tadqiqotlari.</em>
+          </h2>
+        </div>
+        <div style={{textAlign: 'right', paddingBottom: 8}}>
+          <a href="publications.html" className="btn-link"><span data-uz="Barcha nashrlar" data-en="All publications" data-ru="Все публикации">Barcha nashrlar</span>
+            <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path d="M5 12h14M13 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div className="card-grid reveal-stagger">
+        <a href="publication-detail.html" className="pub-card">
+          <div className="pub-card-img">
+            <img loading="lazy" decoding="async" src="assets/aral-sea-conservation.jpg" alt="" />
+            <div className="pub-card-badge" data-uz="Tadqiqot" data-en="Research" data-ru="Исследование">Tadqiqot</div>
+          </div>
+          <div className="pub-card-body">
+            <div className="pub-card-meta">
+              <span data-uz="Iqlim · Suv" data-en="Climate · Water" data-ru="Климат · Вода">Iqlim · Suv</span><span className="dot" /><span>2026</span><span className="dot" /><span>UZ</span>
+            </div>
+            <h4 data-uz="Orol dengizi havzasida barqaror sug'orish tizimlari uchun ma'lumotlarga asoslangan qaror qabul qilish" data-en="Data-driven decision making for sustainable irrigation systems in the Aral Sea basin" data-ru="Принятие решений на основе данных для устойчивых оросительных систем в бассейне Аральского моря">
+              Orol dengizi havzasida barqaror sug'orish tizimlari uchun ma'lumotlarga asoslangan qaror qabul qilish</h4>
+            <p className="pub-card-excerpt" data-uz="Sun'iy yo'ldosh ma'lumotlari va dala monitoringi asosida Qoraqalpog'iston va Xorazm viloyatlarida suv samaradorligini oshirish." data-en="Improving water efficiency in Karakalpakstan and Khorezm regions based on satellite data and field monitoring." data-ru="Повышение эффективности использования водных ресурсов в Республике Каракалпакстан и Хорезмской области на основе спутниковых данных и полевого мониторинга.">
+              Sun'iy yo'ldosh ma'lumotlari va dala monitoringi asosida Qoraqalpog'iston va Xorazm viloyatlarida suv
+              samaradorligini oshirish.</p>
+            <div className="pub-card-foot">
+              <span>D. Egamberdiyeva</span>
+              <span className="arrow"><svg width={18} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path d="M5 12h14M13 5l7 7-7 7" />
+                </svg></span>
+            </div>
+          </div>
+        </a>
+        <a href="publication-detail.html" className="pub-card">
+          <div className="pub-card-img">
+            <img loading="lazy" decoding="async" src="assets/farm-restructuring.jpg" alt="" />
+            <div className="pub-card-badge" data-uz="Tahlil" data-en="Analysis" data-ru="Аналитика">Tahlil</div>
+          </div>
+          <div className="pub-card-body">
+            <div className="pub-card-meta">
+              <span data-uz="Siyosat" data-en="Policy" data-ru="Политика">Siyosat</span><span className="dot" /><span>2026</span><span className="dot" /><span data-uz="11 davlat" data-en="11 countries" data-ru="11 стран">11 davlat</span>
+            </div>
+            <h4 data-uz="CAREC mintaqasida fermer xo'jaligini qayta tashkil etishning 30 yillik tajribasi" data-en="30 years of experience in farm restructuring in the CAREC region" data-ru="30-летний опыт реорганизации фермерских хозяйств в регионе ЦАРИЭС">CAREC mintaqasida fermer
+              xo'jaligini qayta tashkil etishning 30 yillik tajribasi</h4>
+            <p className="pub-card-excerpt" data-uz="8 ta davlat misolida agrar islohotlar, yer foydalanish huquqlari va suv resurslarini boshqarish bo'yicha qiyosiy tahlil." data-en="Comparative analysis of agricultural reforms, land use rights, and water resource management across 11 countries." data-ru="Сравнительный анализ аграрных реформ, прав землепользования и управления водными ресурсами на примере 11 стран.">
+              8 ta davlat misolida agrar islohotlar, yer foydalanish huquqlari va suv resurslarini boshqarish bo'yicha
+              qiyosiy tahlil.</p>
+            <div className="pub-card-foot">
+              <span>K. Akramov, M. Petrov</span>
+              <span className="arrow"><svg width={18} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path d="M5 12h14M13 5l7 7-7 7" />
+                </svg></span>
+            </div>
+          </div>
+        </a>
+        <a href="publication-detail.html" className="pub-card">
+          <div className="pub-card-img">
+            <img loading="lazy" decoding="async" src="assets/uzbek-china-lab.jpg" alt="" />
+            <div className="pub-card-badge" data-uz="Texnik" data-en="Technical" data-ru="Технический">Texnik</div>
+          </div>
+          <div className="pub-card-body">
+            <div className="pub-card-meta">
+              <span data-uz="Tuproq · Texnologiya" data-en="Soil · Technology" data-ru="Почва · Технологии">Tuproq ·
+                Texnologiya</span><span className="dot" /><span>2025</span>
+            </div>
+            <h4 data-uz="Cho'l zonasidagi tuproq mikrobiomasi: O'zbek-Xitoy qo'shma laboratoriyasi natijalari" data-en="Soil microbiome in the desert zone: Results of Uzbek-Chinese joint laboratory" data-ru="Микробиом почвы в пустынной зоне: результаты узбекско-китайской совместной лаборатории">Cho'l
+              zonasidagi tuproq mikrobiomasi: O'zbek-Xitoy qo'shma laboratoriyasi natijalari</h4>
+            <p className="pub-card-excerpt" data-uz="Toshkent va Kashqar yaqinida olib borilgan 5 yillik tajribalar asosida tuproq sog'ligi va o'g'it samaradorligi bo'yicha xulosalar." data-en="Findings on soil health and fertilizer efficiency based on 5-year experiments conducted near Tashkent and Kashgar." data-ru="Выводы о здоровье почвы и эффективности удобрений на основе 5-летних экспериментов, проведенных близ Ташкента и Кашгара.">
+              Toshkent va Kashqar yaqinida olib borilgan 5 yillik tajribalar asosida tuproq sog'ligi va o'g'it
+              samaradorligi bo'yicha xulosalar.</p>
+            <div className="pub-card-foot">
+              <span>S. Yusupova, L. Chen</span>
+              <span className="arrow"><svg width={18} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path d="M5 12h14M13 5l7 7-7 7" />
+                </svg></span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+  {/* IMAGE + STORY */}
+  <section className="section">
+    <div className="container-wide">
+      <div className="reveal" style={{display: 'grid', gridTemplateColumns: '1.05fr 1fr', gap: 100, alignItems: 'center'}}>
+        <div style={{position: 'relative'}} className="reveal-image story-photo">
+          <img loading="lazy" decoding="async" src="assets/hand-soil-planting.jpg" alt="" style={{aspectRatio: '4/5', objectFit: 'cover', width: '100%'}} />
+          {/* Rotating badge overlay */}
+          <div style={{position: 'absolute', top: '-32px', right: '-32px', width: 140, height: 140, zIndex: 3}}>
+            <svg viewBox="0 0 100 100" style={{width: '100%', height: '100%', animation: 'rotateSlow 24s linear infinite'}}>
+              <defs>
+                <path id="circPath" d="M 50,50 m -38,0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0" />
+              </defs>
+              <text fontFamily="JetBrains Mono" fontSize={7} fill="#0c321c" letterSpacing={2}>
+                <textPath href="#circPath" startOffset={0}>CAREC · MINTAQAVIY · SHERIKLIK · CAREC · MINTAQAVIY ·
+                  SHERIKLIK ·</textPath>
+              </text>
+            </svg>
+            <div style={{position: 'absolute', inset: 0, display: 'grid', placeItems: 'center'}}>
+              <svg width={28} height={28} viewBox="0 0 24 24" fill="none" stroke="#0c321c" strokeWidth="1.5">
+                <path d="M12 2L2 22h20L12 2z" />
+              </svg>
+            </div>
+          </div>
+          <div style={{position: 'absolute', bottom: 24, left: 24, right: 24, padding: '20px 24px', background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(10px)', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+            <div>
+              <div style={{fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--ink-500)', marginBottom: 4}} data-uz="Dala tadqiqoti — 2025" data-en="Field study — 2025" data-ru="Полевое исследование — 2025">
+                Field study — 2025</div>
+              <div style={{fontFamily: 'var(--serif-display)', fontSize: 22, fontStyle: 'italic', letterSpacing: '-0.02em'}} data-uz="Buxoro viloyati, mart oyi" data-en="Bukhara region, March" data-ru="Бухарская область, март">
+                Buxoro viloyati, mart oyi</div>
+            </div>
+            <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M7 17L17 7M9 7h8v8" />
+            </svg>
+          </div>
+        </div>
+        <div>
+          <div className="section-label">
+            <span className="num">v.</span>
+            <span data-uz="Missiya" data-en="Mission" data-ru="Миссия">Missiya</span>
+          </div>
+          <h2 style={{marginBottom: 36}}><span data-uz="Yashil agrar" data-en="A green agricultural" data-ru="Зеленое аграрное">Yashil agrar</span> <em data-uz="kelajak" data-en="future" data-ru="будущее">kelajak</em> <span data-uz="— bugungi ilmiy qarorlardan boshlanadi." data-en="— begins with today's scientific decisions." data-ru="— начинается с сегодняшних научных решений.">— bugungi ilmiy qarorlardan boshlanadi.</span></h2>
+          <p className="lead" style={{marginBottom: 36}} data-uz="Biz hududning eng yaxshi olimlari, fermerlari va siyosatchilarini ilmiy ma'lumotlar va amaliy yechimlar atrofida birlashtiramiz. Maqsad — keyingi avlodlar uchun mahsuldor yerlar, toza suvlar va iqlimga chidamli oziq-ovqat tizimlarini saqlab qolish." data-en="We bring together the region's best scientists, farmers, and policymakers around scientific data and practical solutions. The goal is to preserve productive land, clean water, and climate-resilient food systems for future generations." data-ru="Мы объединяем лучших ученых, фермеров и политиков региона вокруг научных данных и практических решений. Цель — сохранить продуктивные земли, чистую воду и климатически устойчивые продовольственные системы для будущих поколений.">
+            Biz hududning eng yaxshi olimlari, fermerlari va siyosatchilarini
+            ilmiy ma'lumotlar va amaliy yechimlar atrofida birlashtiramiz. Maqsad — keyingi avlodlar uchun mahsuldor
+            yerlar, toza suvlar va iqlimga chidamli oziq-ovqat tizimlarini saqlab qolish.</p>
+          <div className="hairline"><span>02 — 04</span><span className="diamond" /><span data-uz="Missiya bayoni" data-en="Mission statement" data-ru="Формулировка миссии">Missiya bayoni</span></div>
+          <a href="about.html" className="btn-link"><span data-uz="RCGA haqida ko'proq" data-en="More about RCGA" data-ru="Подробнее о RCGA">RCGA haqida ko'proq</span>
+            <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path d="M5 12h14M13 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  {/* FEATURE CARDS (Big numbers) */}
+  <section className="section bg-cream">
+    <div className="container-wide">
+      <div className="section-head-single reveal">
+        <div className="section-label">
+          <span className="num">vi.</span>
+          <span data-uz="Yutuqlar" data-en="Achievements" data-ru="Достижения">Yutuqlar</span>
+        </div>
+        <h2><span data-uz="Ta'sir" data-en="Scale of" data-ru="Масштаб">Ta'sir</span> <em data-uz="ko'lami." data-en="impact." data-ru="воздействия.">ko'lami.</em></h2>
+      </div>
+      <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24}} className="reveal-stagger">
+        <div className="feature-card">
+          <div className="feature-card-big">27%</div>
+          <h4 data-uz="Suv tejash" data-en="Water saving" data-ru="Экономия воды">Suv tejash</h4>
+          <p data-uz="Orol dengizi pilot loyihasida joriy etilgan sug'orish tizimi natijasi." data-en="Result of the irrigation system implemented in the Aral Sea pilot project." data-ru="Результат внедрения оросительной системы в пилотном проекте Аральского моря.">Orol dengizi pilot
+            loyihasida joriy etilgan sug'orish tizimi natijasi.</p>
+        </div>
+        <div className="feature-card">
+          <div className="feature-card-big">3.2k</div>
+          <h4 data-uz="Gektar sinov" data-en="Hectares tested" data-ru="Гектаров испытаний">Gektar sinov</h4>
+          <p data-uz="2024-2025 dala mavsumlarida amalga oshirilgan pilot loyihalar." data-en="Pilot projects conducted during the 2024-2025 field seasons." data-ru="Пилотные проекты, реализованные в полевых сезонах 2024-2025 годов.">2024-2025 dala mavsumlarida
+            amalga oshirilgan pilot loyihalar.</p>
+        </div>
+        <div className="feature-card">
+          <div className="feature-card-big">+11%</div>
+          <h4 data-uz="Hosildorlik o'sishi" data-en="Yield increase" data-ru="Рост урожайности">Hosildorlik o'sishi</h4>
+          <p data-uz="Ma'lumotlarga asoslangan qaror qabul qilish tufayli erishilgan natija." data-en="Result achieved through data-driven decision-making." data-ru="Результат, достигнутый благодаря принятию решений на основе данных.">Ma'lumotlarga asoslangan qaror
+            qabul qilish tufayli erishilgan natija.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  {/* UPCOMING EVENTS */}
+  <section className="section">
+    <div className="container-wide">
+      <div className="section-head reveal">
+        <div>
+          <div className="section-label">
+            <span className="num">vii.</span>
+            <span data-uz="Yaqinlashayotgan tadbirlar" data-en="Upcoming events" data-ru="Предстоящие события">Yaqinlashayotgan tadbirlar</span>
+          </div>
+          <h2><span data-uz="Hamjamiyat bilan" data-en="Face-to-face with" data-ru="Лицом к лицу с">Hamjamiyat
+              bilan</span> <em data-uz="yuzma-yuz." data-en="the community." data-ru="сообществом.">yuzma-yuz.</em></h2>
+        </div>
+        <div style={{textAlign: 'right', paddingBottom: 8}}>
+          <a href="events.html" className="btn-link"><span data-uz="Barcha tadbirlar" data-en="All events" data-ru="Все события">Barcha tadbirlar</span>
+            <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path d="M5 12h14M13 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div className="reveal">
+        <a href="#" className="event-row">
+          <div className="event-date"><span data-uz="12 Iyul" data-en="12 Jul" data-ru="12 Июля">12 Iyul</span><span data-uz="2026 · Toshkent" data-en="2026 · Tashkent" data-ru="2026 · Ташкент">2026 · Toshkent</span></div>
+          <div>
+            <div className="event-title" data-uz="CAREC Yashil Agrar Forumi 2026" data-en="CAREC Green Agriculture Forum 2026" data-ru="Форум зеленого сельского хозяйства ЦАРИЭС 2026">
+              CAREC Yashil Agrar Forumi 2026</div>
+            <div className="event-tags">
+              <span className="tag" data-uz="Konferensiya" data-en="Conference" data-ru="Конференция">Konferensiya</span>
+              <span className="tag ink" data-uz="11 davlat" data-en="11 countries" data-ru="11 стран">11 davlat</span>
+              <span className="tag gold" data-uz="Asosiy tadbir" data-en="Main event" data-ru="Главное событие">Asosiy
+                tadbir</span>
+            </div>
+          </div>
+          <div className="event-arrow">
+            <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path d="M7 17L17 7M9 7h8v8" />
+            </svg>
+          </div>
+        </a>
+        <a href="#" className="event-row">
+          <div className="event-date"><span data-uz="28 Iyul" data-en="28 Jul" data-ru="28 Июля">28 Iyul</span><span data-uz="2026 · Onlayn" data-en="2026 · Online" data-ru="2026 · Онлайн">2026 · Onlayn</span></div>
+          <div>
+            <div className="event-title" data-uz="Tuproq sog'ligini baholash: zamonaviy laboratoriya usullari" data-en="Assessing soil health: modern laboratory methods" data-ru="Оценка здоровья почвы: современные лабораторные методы">Tuproq sog'ligini baholash: zamonaviy
+              laboratoriya usullari</div>
+            <div className="event-tags">
+              <span className="tag" data-uz="Vebinar" data-en="Webinar" data-ru="Вебинар">Vebinar</span>
+              <span className="tag ink" data-uz="Olimlar uchun" data-en="For scientists" data-ru="Для ученых">Olimlar
+                uchun</span>
+            </div>
+          </div>
+          <div className="event-arrow">
+            <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path d="M7 17L17 7M9 7h8v8" />
+            </svg>
+          </div>
+        </a>
+        <a href="#" className="event-row">
+          <div className="event-date"><span data-uz="14 Avg" data-en="14 Aug" data-ru="14 Августа">14 Avg</span><span data-uz="2026 · Bishkek" data-en="2026 · Bishkek" data-ru="2026 · Бишкек">2026 · Bishkek</span></div>
+          <div>
+            <div className="event-title" data-uz="Yosh tadqiqotchilar maktabi — iqlim moslashuvi" data-en="Young researchers school — climate adaptation" data-ru="Школа молодых исследователей — климатическая адаптация">Yosh tadqiqotchilar maktabi — iqlim
+              moslashuvi</div>
+            <div className="event-tags">
+              <span className="tag" data-uz="Trening" data-en="Training" data-ru="Тренинг">Trening</span>
+              <span className="tag ink" data-uz="PhD talabalar" data-en="PhD students" data-ru="PhD студенты">PhD
+                talabalar</span>
+              <span className="tag rust" data-uz="64 joy" data-en="64 seats" data-ru="64 места">64 joy</span>
+            </div>
+          </div>
+          <div className="event-arrow">
+            <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path d="M7 17L17 7M9 7h8v8" />
+            </svg>
+          </div>
+        </a>
+        <a href="#" className="event-row">
+          <div className="event-date"><span data-uz="02 Sen" data-en="02 Sep" data-ru="02 Сентября">02 Sen</span><span data-uz="2026 · Olmaota" data-en="2026 · Almaty" data-ru="2026 · Алматы">2026 · Olmaota</span></div>
+          <div>
+            <div className="event-title" data-uz="Markaziy Osiyo bug'doy seleksiyasi simpoziumi" data-en="Central Asian wheat breeding symposium" data-ru="Симпозиум по селекции пшеницы в Центральной Азии">Markaziy Osiyo bug'doy seleksiyasi simpoziumi
+            </div>
+            <div className="event-tags">
+              <span className="tag" data-uz="Simpozium" data-en="Symposium" data-ru="Симпозиум">Simpozium</span>
+              <span className="tag ink" data-uz="Seleksiya" data-en="Breeding" data-ru="Селекция">Seleksiya</span>
+            </div>
+          </div>
+          <div className="event-arrow">
+            <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path d="M7 17L17 7M9 7h8v8" />
+            </svg>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+  {/* COUNTRIES */}
+  <section className="section bg-green-900">
+    <div className="container-wide">
+      <div className="section-head-single reveal">
+        <div className="section-label" style={{color: 'rgba(255,255,255,0.5)'}}>
+          <span className="num" style={{color: 'var(--green-300)'}}>viii.</span>
+          <span data-uz="CAREC sherikligi" data-en="CAREC partnership" data-ru="Партнерство ЦАРИЭС">CAREC
+            sherikligi</span>
+        </div>
+        <h2 style={{color: '#fff'}}><span data-uz="O‘n bir davlat." data-en="Eleven countries." data-ru="Одиннадцать стран.">O‘n bir davlat.</span> <em data-uz="Bir tarmoq." data-en="One network." data-ru="Одна сеть.">Bir tarmoq.</em></h2>
+        <p className="lead" style={{marginTop: 24}} data-uz="Markaziy Osiyo va Janubiy Kavkazning yetakchi agrar tadqiqot va ta'lim muassasalari." data-en="Leading agricultural research and educational institutions of Central Asia and the South Caucasus." data-ru="Ведущие аграрные научно-исследовательские и образовательные учреждения Центральной Азии и Южного Кавказа.">
+          Markaziy Osiyo va Janubiy Kavkazning yetakchi agrar tadqiqot va ta'lim
+          muassasalari.</p>
+      </div>
+      <div className="countries-rail reveal-stagger">
+        {countries.map(([code,,uz,en,ru]) => <a key={code} href="institutions.html" className="country-chip"><span className="country-code">{code}</span><span className="country-name" data-uz={uz} data-en={en} data-ru={ru}>{uz}</span></a>)}
+      </div>
+    </div>
+  </section>
+  {/* CTA */}
+  <section className="section">
+    <div className="container-wide">
+      <div className="cta-block reveal">
+        <div className="eyebrow" style={{justifyContent: 'center'}} data-uz="Bepul a'zolik" data-en="Free membership" data-ru="Бесплатное членство">Bepul a'zolik</div>
+        <h2><span data-uz="Hamjamiyatga" data-en="Join the" data-ru="Присоединяйтесь к">Hamjamiyatga</span> <em data-uz="qo'shiling." data-en="community." data-ru="сообществу.">qo'shiling.</em></h2>
+        <p data-uz="Ilmiy nashrlaringizni joylashtiring, tadbirlarga qatnashing va CAREC mintaqasi bo'ylab yashil qishloq xo'jaligi hamjamiyatiga a'zo bo'ling." data-en="Publish your research papers, participate in events, and join the green agriculture community across the CAREC region." data-ru="Публикуйте свои научные работы, участвуйте в мероприятиях и становитесь членом сообщества зеленого сельского хозяйства региона ЦАРИЭС.">
+          Ilmiy nashrlaringizni joylashtiring, tadbirlarga qatnashing va CAREC mintaqasi bo'ylab yashil qishloq
+          xo'jaligi hamjamiyatiga a'zo bo'ling.</p>
+        <a href="login.html#register" className="btn btn-primary" data-magnetic style={{background: '#fff', color: 'var(--green-900)'}}>
+          <span data-uz="Ro'yxatdan o'tish — Bepul" data-en="Register — Free" data-ru="Регистрация — Бесплатно">Ro'yxatdan o'tish — Bepul</span>
+          <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+            <path d="M5 12h14M13 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+  {/* LIVE METRIC STRIP */}
+  <div className="metric-strip">
+    <span><span className="metric-dot" /><span data-uz="LIVE · CAREC · 11 davlat" data-en="LIVE · CAREC · 11 countries" data-ru="LIVE · ЦАРИЭС · 11 стран">LIVE · CAREC · 11 davlat</span></span>
+    <span className="sep" />
+    <span data-uz="Toshkent 34°C · Bishkek 28°C · Astana 22°C" data-en="Tashkent 34°C · Bishkek 28°C · Astana 22°C" data-ru="Ташкент 34°C · Бишкек 28°C · Астана 22°C">Toshkent 34°C · Bishkek 28°C · Astana 22°C</span>
+    <span className="sep" />
+    <span data-uz="Suv indeksi: 0.42" data-en="Water index: 0.42" data-ru="Индекс воды: 0.42">Suv indeksi: 0.42</span>
+    <span className="sep" />
+    <span data-uz="Faol tadqiqotchilar: 240+" data-en="Active researchers: 240+" data-ru="Активные исследователи: 240+">Faol tadqiqotchilar: 240+</span>
+    <span style={{marginLeft: 'auto'}} data-uz="v2.0.4 · 2026 · Ochiq platforma" data-en="v2.0.4 · 2026 · Open platform" data-ru="v2.0.4 · 2026 · Открытая платформа">v2.0.4 · 2026 · Ochiq platforma</span>
+  </div>
+  {/* BIG FOOTER DISPLAY */}
+  <section style={{background: '#060807', padding: '100px 0 60px', position: 'relative', overflow: 'hidden'}}>
+    <div className="container-wide">
+      <div className="reveal-fade" style={{fontFamily: 'var(--serif-display)', fontSize: 'clamp(72px, 15vw, 240px)', lineHeight: '0.9', fontWeight: 300, color: '#fff', letterSpacing: '-0.045em', marginBottom: 60, fontVariationSettings: '"SOFT" 100, "WONK" 1, "opsz" 144'}}>
+        RCGA <em style={{color: 'var(--green-400)', fontStyle: 'italic'}}>2026</em><span style={{color: 'rgba(255,255,255,0.2)'}}>.</span>
+      </div>
+      <div style={{display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24, paddingTop: 32, borderTop: '1px solid rgba(255,255,255,0.08)', fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)'}} className="reveal">
+        <span>Regional Center for Green Agriculture</span>
+        <span data-uz="Toshkent · Markaziy Osiyo" data-en="Tashkent · Central Asia" data-ru="Ташкент · Центральная Азия">Toshkent · Markaziy Osiyo</span>
+        <span data-uz="v2.0 · CAREC sherikligi" data-en="v2.0 · CAREC partnership" data-ru="v2.0 · Партнерство ЦАРИЭС">v2.0 · CAREC sherikligi</span>
+      </div>
+    </div>
+  </section>
+  <Footer />
+  {/* Back to top sticky badge */}
+  <a href="#top" data-click="h0" className="sticky-badge" aria-label="Yuqoriga">
+    <svg viewBox="0 0 100 100">
+      <defs>
+        <path id="btpath" d="M 50,50 m -35,0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" />
+      </defs>
+      <text fontFamily="JetBrains Mono" fontSize="7.5" fill="rgba(255,255,255,0.75)" letterSpacing={2}>
+        <textPath href="#btpath" startOffset={0}>YUQORIGA · BACK TO TOP · YUQORIGA · BACK TO TOP · </textPath>
+      </text>
+    </svg>
+    <span className="sticky-badge-arrow">
+      <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+        <path d="M12 19V5M5 12l7-7 7 7" />
+      </svg>
+    </span>
+  </a>
+</div>
+  </Page>;
+}
+
